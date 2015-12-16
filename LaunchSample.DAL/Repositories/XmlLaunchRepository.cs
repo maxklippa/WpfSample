@@ -6,6 +6,7 @@ using System.Linq;
 using System.Xml.Serialization;
 using LaunchSample.Core.Patterns;
 using LaunchSample.Domain.Models;
+using LaunchSample.Domain.Models.Entities;
 
 namespace LaunchSample.DAL.Repositories
 {

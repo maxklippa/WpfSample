@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using LaunchSample.BLL.Services;
 using LaunchSample.Domain.Models;
+using LaunchSample.Domain.Models.Entities;
 
 namespace LaunchSample.WPF.ViewModel
 {

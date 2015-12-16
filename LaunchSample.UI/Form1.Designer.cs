@@ -1,4 +1,6 @@
-﻿namespace LaunchSample.UI
+﻿using LaunchSample.Domain.Models.Entities;
+
+namespace LaunchSample.UI
 {
     partial class Form1
     {
@@ -110,7 +112,7 @@
             // 
             // launchBindingSource
             // 
-            this.launchBindingSource.DataSource = typeof(LaunchSample.Domain.Models.Launch);
+            this.launchBindingSource.DataSource = typeof(Launch);
             // 
             // bindingNavigatorCountItem
             // 

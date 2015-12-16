@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using LaunchSample.Core.Enumerations;
 using LaunchSample.DAL.Repositories;
-using LaunchSample.Domain.Models;
+using LaunchSample.Domain.Models.Dtos;
+using LaunchSample.Domain.Models.Entities;
 
 namespace LaunchSample.BLL.Services
 {
@@ -16,14 +18,14 @@ namespace LaunchSample.BLL.Services
 			_launchRepository = new LaunchRepository();
 		}
 
-		public IEnumerable<Launch> All()
+		public IEnumerable<LaunchDto> All()
 		{
-			return _launchRepository.All();
+			return Mapper.Map<IQueryable<Launch>, IEnumerable<LaunchDto>>(_launchRepository.All());
 		}
 
-		public void Create(Launch launch)
+		public void Create(LaunchDto launch)
 		{
-			_launchRepository.Create(launch);
+			_launchRepository.Create(Mapper.Map<LaunchDto, Launch>(launch));
 		}
 
 		public Launch Read(int id)
@@ -31,9 +33,9 @@ namespace LaunchSample.BLL.Services
 			return _launchRepository.Read(id);
 		}
 
-		public void Update(Launch launch)
+		public void Update(LaunchDto launch)
 		{
-			_launchRepository.Update(launch);
+			_launchRepository.Update(Mapper.Map<LaunchDto, Launch>(launch));
 		}
 
 		public void Delete(int id)
@@ -41,15 +43,17 @@ namespace LaunchSample.BLL.Services
 			_launchRepository.Delete(id);
 		}
 
-		public IEnumerable<Launch> GetAll(string city = null, DateTime? from = null, DateTime? to = null, LaunchStatus? status = null)
+		public IEnumerable<LaunchDto> GetAll(string city = null, DateTime? from = null, DateTime? to = null, LaunchStatus? status = null)
 		{
-			return _launchRepository.All().Where(l => (city == null || l.City == city)
+			var launches = _launchRepository.All().Where(l => (city == null || l.City == city)
 			                                          && (!from.HasValue || from.Value <= l.Month)
 			                                          && (!to.HasValue || l.Month <= to.Value)
 			                                          && (!status.HasValue || l.Status == status.Value));
+
+			return Mapper.Map<IQueryable<Launch>, IEnumerable<LaunchDto>>(launches); 
 		}
 
-		public void SaveAll(IEnumerable<Launch> launches)
+		public void SaveAll(IEnumerable<LaunchDto> launches)
 		{
 			List<Launch> all = _launchRepository.All().ToList();
 
@@ -58,9 +62,9 @@ namespace LaunchSample.BLL.Services
 				_launchRepository.Delete(launch.Id);
 			}
 
-			foreach (Launch launch in launches)
+			foreach (var launch in launches)
 			{
-				_launchRepository.Create(launch);
+				Create(launch);
 			}
 		}
 	}

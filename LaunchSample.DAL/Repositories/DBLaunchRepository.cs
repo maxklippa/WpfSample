@@ -2,6 +2,7 @@
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using LaunchSample.Domain.Models;
+using LaunchSample.Domain.Models.Entities;
 
 namespace LaunchSample.DAL.Repositories
 {

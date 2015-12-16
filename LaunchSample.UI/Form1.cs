@@ -7,7 +7,8 @@ using System.Linq;
 using System.Windows.Forms;
 using LaunchSample.BLL.Services;
 using LaunchSample.Core.Enumerations;
-using LaunchSample.Domain.Models;
+using LaunchSample.Domain.Models.Dtos;
+using LaunchSample.Domain.Models.Entities;
 
 namespace LaunchSample.UI
 {
@@ -46,14 +47,14 @@ namespace LaunchSample.UI
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            launchBindingSource.DataSource = new ObservableCollection<Launch>(_launchService.GetAll()).ToBindingList();
+            launchBindingSource.DataSource = new ObservableCollection<LaunchDto>(_launchService.GetAll()).ToBindingList();
         }
         
         private void launchBindingNavigatorSaveItem_Click(object sender, EventArgs e)
         {
             Validate();
 
-            var list = ((IEnumerable)launchDataGridView.DataSource).Cast<Launch>().ToList();
+            var list = ((IEnumerable)launchDataGridView.DataSource).Cast<LaunchDto>().ToList();
             _launchService.SaveAll(list);
 
             launchDataGridView.Refresh();
@@ -73,7 +74,7 @@ namespace LaunchSample.UI
                 ? (LaunchStatus?) null
                 : (LaunchStatus)Enum.Parse(typeof(LaunchStatus), statusComboBox.SelectedItem.ToString(), true);
             filterGridView.DataSource =
-                new ObservableCollection<Launch>(_launchService.GetAll(city, @from, to, status)).ToBindingList();
+                new ObservableCollection<LaunchDto>(_launchService.GetAll(city, @from, to, status)).ToBindingList();
         }
 
         private void cityComboBox_SelectedIndexChanged(object sender, EventArgs e)

@@ -2,6 +2,7 @@
 using LaunchSample.Core.Enumerations;
 using LaunchSample.Domain.Models;
 using System.Configuration;
+using LaunchSample.Domain.Models.Entities;
 
 namespace LaunchSample.DAL.Repositories
 {
