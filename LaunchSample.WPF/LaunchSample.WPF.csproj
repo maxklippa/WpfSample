@@ -54,10 +54,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ViewModel\LaunchListingViewModel.cs" />
+    <Compile Include="ViewModel\LaunchViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="View\LaunchListingView.xaml.cs">
       <DependentUpon>LaunchListingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LaunchView.xaml.cs">
+      <DependentUpon>LaunchView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -72,6 +76,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\LaunchListingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LaunchView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -111,6 +119,10 @@
     <ProjectReference Include="..\LaunchSample.DAL\LaunchSample.DAL.csproj">
       <Project>{85C5DBC0-BB83-4382-BF6D-EC9FF49A583B}</Project>
       <Name>LaunchSample.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LaunchSample.Domain\LaunchSample.Domain.csproj">
+      <Project>{D269686F-3B65-4B90-8AAE-E310EA15277D}</Project>
+      <Name>LaunchSample.Domain</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
