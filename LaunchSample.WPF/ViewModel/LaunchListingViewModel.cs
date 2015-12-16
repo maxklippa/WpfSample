@@ -1,7 +1,8 @@
-﻿namespace LaunchSample.WPF.ViewModel
+﻿using LaunchSample.DAL.Repositories;
+
+namespace LaunchSample.WPF.ViewModel
 {
 	public class LaunchListingViewModel : ViewModelBase
 	{
-		 
 	}
 }

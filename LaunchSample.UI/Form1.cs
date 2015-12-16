@@ -54,7 +54,7 @@ namespace LaunchSample.UI
             Validate();
 
             var list = ((IEnumerable)launchDataGridView.DataSource).Cast<Launch>().ToList();
-            _launchService.Save(list);
+            _launchService.SaveAll(list);
 
             launchDataGridView.Refresh();
         }
