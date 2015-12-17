@@ -53,12 +53,13 @@ namespace LaunchSample.DAL.Repositories
 			return _launches.AsQueryable();
 		}
 
-		public void Create(Launch launch)
+		public Launch Create(Launch launch)
 		{
 			var id = _launches.Any() ? _launches.Max(l => l.Id) + 1 : 1;
 			launch.Id = id;
 			_launches.Add(launch);
 			SaveLaunchesToFile(_launches);
+			return launch;
 		}
 
 		public Launch Read(int id)

@@ -6,7 +6,7 @@ using LaunchSample.Domain.Models.Entities;
 
 namespace LaunchSample.DAL.Repositories
 {
-    public class LaunchRepository
+    public class LaunchRepository : ILaunchRepository
     {
 	    private readonly ILaunchRepository _launchRepository;
 
@@ -33,9 +33,9 @@ namespace LaunchSample.DAL.Repositories
 	        return _launchRepository.All();
         }
 
-        public void Create(Launch launch)
+        public Launch Create(Launch launch)
         {
-            _launchRepository.Create(launch);
+            return _launchRepository.Create(launch);
         }
 
         public Launch Read(int id)

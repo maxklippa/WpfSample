@@ -20,7 +20,7 @@ namespace LaunchSample.DAL.Repositories
 			return _context.Launches;
 		}
 
-		public void Create(Launch launch)
+		public Launch Create(Launch launch)
 		{
 			DbEntityEntry dbEntityEntry = _context.Entry(launch);
 			if (dbEntityEntry.State != EntityState.Detached)
@@ -29,9 +29,10 @@ namespace LaunchSample.DAL.Repositories
 			}
 			else
 			{
-				_context.Launches.Add(launch);
+				launch = _context.Launches.Add(launch);
 			}
 			_context.SaveChanges();
+			return launch;
 		}
 
 		public Launch Read(int id)

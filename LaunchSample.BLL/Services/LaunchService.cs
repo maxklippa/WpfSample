@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using LaunchSample.BLL.EventArguments;
 using LaunchSample.Core.Enumerations;
 using LaunchSample.DAL.Repositories;
 using LaunchSample.Domain.Models.Dtos;
@@ -11,12 +12,30 @@ namespace LaunchSample.BLL.Services
 {
 	public class LaunchService : ILaunchService
 	{
+		#region Private Fields
+
 		private readonly LaunchRepository _launchRepository;
+
+		#endregion // Private Fields
+
+		#region Public Fields
+
+		public event EventHandler<LaunchCreatedEventArgs> LaunchCreated;
+		public event EventHandler<LaunchUpdatedEventArgs> LaunchUpdated;
+		public event EventHandler<LaunchDeletedEventArgs> LaunchDeleted;
+
+		#endregion // Public Fields
+
+		#region Constructor
 
 		public LaunchService()
 		{
 			_launchRepository = new LaunchRepository();
 		}
+
+		#endregion // Constructor
+
+		#region Public Interface
 
 		public IEnumerable<LaunchDto> All()
 		{
@@ -25,7 +44,12 @@ namespace LaunchSample.BLL.Services
 
 		public void Create(LaunchDto launch)
 		{
-			_launchRepository.Create(Mapper.Map<LaunchDto, Launch>(launch));
+			var launchEntity = _launchRepository.Create(Mapper.Map<LaunchDto, Launch>(launch));
+
+			if (LaunchCreated != null)
+			{
+				LaunchCreated(this, new LaunchCreatedEventArgs(Mapper.Map<Launch, LaunchDto>(launchEntity)));
+			}
 		}
 
 		public Launch Read(int id)
@@ -36,11 +60,21 @@ namespace LaunchSample.BLL.Services
 		public void Update(LaunchDto launch)
 		{
 			_launchRepository.Update(Mapper.Map<LaunchDto, Launch>(launch));
+
+			if (LaunchUpdated != null)
+			{
+				LaunchUpdated(this, new LaunchUpdatedEventArgs(launch));
+			}
 		}
 
 		public void Delete(int id)
 		{
 			_launchRepository.Delete(id);
+
+			if (LaunchDeleted != null)
+			{
+				LaunchDeleted(this, new LaunchDeletedEventArgs(id));
+			}
 		}
 
 		public bool IsAlreadyExists(int id)
@@ -72,5 +106,7 @@ namespace LaunchSample.BLL.Services
 				Create(launch);
 			}
 		}
+
+		#endregion // Public Interface
 	}
 }
