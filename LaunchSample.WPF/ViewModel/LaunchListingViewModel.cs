@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows.Input;
 using LaunchSample.BLL.EventArguments;
 using LaunchSample.BLL.Services;
 
@@ -14,6 +15,10 @@ namespace LaunchSample.WPF.ViewModel
 		#region Fields
 
 		private readonly LaunchService _launchService;
+
+		private RelayCommand _createLaunchCommand;
+		private RelayCommand _updateLaunchCommand;
+		private RelayCommand _deleteLaunchCommand;
 
 		#endregion // Fields
 
@@ -52,7 +57,62 @@ namespace LaunchSample.WPF.ViewModel
 
 		public ObservableCollection<LaunchViewModel> AllLaunches { get; private set; }
 
+		public ICommand CreateLaunchCommand
+		{
+			get
+			{
+				if (_createLaunchCommand == null)
+				{
+					_createLaunchCommand = new RelayCommand(param => CreateLaunch());
+				}
+				return _createLaunchCommand;
+			}
+		}
+
+		public ICommand UpdateLaunchCommand
+		{
+			get
+			{
+				if (_updateLaunchCommand == null)
+				{
+					_updateLaunchCommand = new RelayCommand(param => UpdateLaunch());
+				}
+				return _updateLaunchCommand;
+			}
+		}
+
+		public ICommand DeleteLaunchCommand
+		{
+			get
+			{
+				if (_deleteLaunchCommand == null)
+				{
+					_deleteLaunchCommand = new RelayCommand(param => DeleteLaunch());
+				}
+				return _deleteLaunchCommand;
+			}
+		}
+
 		#endregion // Public Interface
+
+		#region Public Methods
+
+		private void CreateLaunch()
+		{
+
+		}
+
+		private void UpdateLaunch()
+		{
+
+		}
+
+		private void DeleteLaunch()
+		{
+
+		}
+
+		#endregion // Public Methods
 
 		#region Base Class Overrides
 

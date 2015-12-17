@@ -10,5 +10,7 @@
 	<DataTemplate DataType="{x:Type vm:LaunchViewModel}">
 		<vw:LaunchView />
 	</DataTemplate>
+	
+	
 
 </ResourceDictionary>

@@ -13,7 +13,16 @@
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 
-		<DataGrid Grid.Row="0" Grid.Column="0" Height="200"/>
+		<DataGrid Grid.Row="0" Grid.Column="0" Height="200" ItemsSource="{Binding Path=AllLaunches}" AutoGenerateColumns="False" SelectionMode="Single">
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="Id" Binding="{Binding Id}" Visibility="Hidden"/>
+				<DataGridTextColumn Header="City" Binding="{Binding City}"/>
+				<DataGridTextColumn Header="Start" Binding="{Binding StartDateTime}"/>
+				<DataGridTextColumn Header="End" Binding="{Binding EndDateTime}"/>
+				<DataGridTextColumn Header="Month" Binding="{Binding Month, StringFormat=\{0:MMMM yyyy\}}" />
+				<DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
+			</DataGrid.Columns>
+		</DataGrid>
 
 		<Grid Grid.Row="2" Column="0">
 			<Grid.ColumnDefinitions>

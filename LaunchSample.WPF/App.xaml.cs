@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using LaunchSample.Domain.Mapping;
 using LaunchSample.WPF.ViewModel;
 
@@ -18,7 +19,13 @@ namespace LaunchSample.WPF
 
 			var viewModel = new MainWindowViewModel();
 
-			// todo: close event
+			EventHandler handler = null;
+			handler = delegate
+			{
+				viewModel.RequestClose -= handler;
+				window.Close();
+			};
+			viewModel.RequestClose += handler;
 
 			window.DataContext = viewModel;
 

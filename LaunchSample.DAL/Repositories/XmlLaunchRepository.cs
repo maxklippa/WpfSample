@@ -32,6 +32,7 @@ namespace LaunchSample.DAL.Repositories
 				File.Create(_filename);
 			}
 
+			var isFileEmpty = false;
 			using (TextReader reader = new StreamReader(_filename))
 			{
 				var serializer = new XmlSerializer(typeof(LaunchList));
@@ -41,8 +42,13 @@ namespace LaunchSample.DAL.Repositories
 				}
 				catch (InvalidOperationException)
 				{
-					SaveLaunchesToFile(new List<Launch>());
+					isFileEmpty = true;
 				}
+			}
+
+			if (isFileEmpty)
+			{
+				SaveLaunchesToFile(new List<Launch>());
 			}
 
 			_launches = GetLaunchesFromFile().ToList();
