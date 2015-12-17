@@ -13,6 +13,8 @@ namespace LaunchSample.WPF.ViewModel
 		private readonly LaunchDto _launch;
 		private readonly LaunchService _launchService;
 
+
+		private bool _isHidden;
 		private RelayCommand _saveCommand;
 
 		#endregion // Fields
@@ -122,6 +124,23 @@ namespace LaunchSample.WPF.ViewModel
 		#endregion // Launch Properties
 
 		#region Presentation Properties
+
+		public bool IsHidden
+		{
+			get
+			{
+				return _isHidden;
+			}
+			set
+			{
+				if (value == _isHidden)
+					return;
+
+				_isHidden = value;
+
+				base.OnPropertyChanged("IsHidden");
+			}
+		}
 
 		public ICommand SaveCommand
 		{

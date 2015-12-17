@@ -23,12 +23,12 @@ namespace LaunchSample.WPF.ViewModel
 		private RelayCommand _updateLaunchCommand;
 		private RelayCommand _deleteLaunchCommand;
 
-		private string[] _launchStatusOptions;
-		private string _launchStatus;
-		private string[] _launchCityOptions;
-		private string _launchCity;
-		private DateTime _launchFrom;
-		private DateTime _launchTo;
+		private string[] _launchStatusFilterOptions;
+		private string _launchStatusFilter;
+		private string[] _launchCityFilterOptions;
+		private string _launchCityFilter;
+		private DateTime _launchFromFilter;
+		private DateTime _launchToFilter;
 
 		#endregion // Fields
 
@@ -45,10 +45,10 @@ namespace LaunchSample.WPF.ViewModel
 			_launchService.LaunchUpdated += OnLaunchUpdated;
 			_launchService.LaunchDeleted += OnLaunchDeleted;
 
-			_launchStatus = "All";
-			_launchCity = "All";
-			_launchFrom = DateTime.Now.AddYears(-1);
-			_launchTo = DateTime.Now;
+			_launchStatusFilter = "All";
+			_launchCityFilter = "All";
+			_launchFromFilter = DateTime.Now.AddYears(-1);
+			_launchToFilter = DateTime.Now;
 
 			CreateLaunchListing();
 		}
@@ -74,110 +74,96 @@ namespace LaunchSample.WPF.ViewModel
 
 		public LaunchViewModel SelectedLaunch { get; set; }
 
-		public string LaunchStatus
+		public string LaunchStatusFilter
 		{
-			get { return _launchStatus; }
+			get { return _launchStatusFilter; }
 			set
 			{
-				if (value == _launchStatus)
+				if (value == _launchStatusFilter)
 					return;
 
-				_launchStatus = value;
+				_launchStatusFilter = value;
 
-				if (_launchStatus == "All")
-				{
-					//CreateLaunchListing();
-				}
-				else
-				{
-//					AllLaunches.
-				}
+				AllLaunches.ToList().ForEach(l => l.IsHidden = !IsSatisfyFilteringCondition(l));
 
-				base.OnPropertyChanged("LaunchStatus");
+				base.OnPropertyChanged("LaunchStatusFilter");
 			}
 		}
 
-		public string[] LaunchStatusOptions
+		public string[] LaunchStatusFilterOptions
 		{
 			get
 			{
-				if (_launchStatusOptions == null)
+				if (_launchStatusFilterOptions == null)
 				{
 					var statuses = Enum.GetValues(typeof (LaunchStatus)).Cast<LaunchStatus>().Select(s => s.ToString()).ToList();
 					statuses.Insert(0, "All");
-					_launchStatusOptions = statuses.ToArray();
+					_launchStatusFilterOptions = statuses.ToArray();
 				}
-				return _launchStatusOptions;
+				return _launchStatusFilterOptions;
 			}
 		}
 
-		public string LaunchCity
+		public string LaunchCityFilter
 		{
-			get { return _launchCity; }
+			get { return _launchCityFilter; }
 			set
 			{
-				if (value == _launchCity)
+				if (value == _launchCityFilter)
 					return;
 
-				_launchCity = value;
+				_launchCityFilter = value;
 
-				if (_launchCity == "All")
-				{
-					//CreateLaunchListing();
-				}
-				else
-				{
-					//CreateLaunchListing(null, null, null, (LaunchStatus)Enum.Parse(typeof(LaunchStatus), _launchStatus));
-				}
+				AllLaunches.ToList().ForEach(l => l.IsHidden = !IsSatisfyFilteringCondition(l));
 
-				base.OnPropertyChanged("LaunchCity");
+				base.OnPropertyChanged("LaunchCityFilter");
 			}
 		}
 
-		public string[] LaunchCityOptions
+		public string[] LaunchCityFilterOptions
 		{
 			get
 			{
-				if (_launchCityOptions == null)
+				if (_launchCityFilterOptions == null)
 				{
 					var towns = _launchService.GetAll().Select(l => l.City);
 					var cities = new HashSet<string>(towns).ToList();
 					cities.Insert(0, "All");
-					_launchCityOptions = cities.ToArray();
+					_launchCityFilterOptions = cities.ToArray();
 				}
-				return _launchCityOptions;
+				return _launchCityFilterOptions;
 			}
 		}
 
-		public DateTime LaunchFrom
+		public DateTime LaunchFromFilter
 		{
-			get { return _launchFrom; }
+			get { return _launchFromFilter; }
 			set
 			{
-				if (value == _launchFrom)
+				if (value == _launchFromFilter)
 					return;
 
-				_launchFrom = value;
+				_launchFromFilter = value;
 
-				// todo: filtering
+				AllLaunches.ToList().ForEach(l => l.IsHidden = !IsSatisfyFilteringCondition(l));
 
-				base.OnPropertyChanged("LaunchFrom");
+				base.OnPropertyChanged("LaunchFromFilter");
 			}
 		}
 
-		public DateTime LaunchTo
+		public DateTime LaunchToFilter
 		{
-			get { return _launchTo; }
+			get { return _launchToFilter; }
 			set
 			{
-				if (value == _launchTo)
+				if (value == _launchToFilter)
 					return;
 
-				_launchTo = value;
+				_launchToFilter = value;
 
-				// todo: filtering
+				AllLaunches.ToList().ForEach(l => l.IsHidden = !IsSatisfyFilteringCondition(l));
 
-				base.OnPropertyChanged("LaunchTo");
+				base.OnPropertyChanged("LaunchToFilter");
 			}
 		}
 
@@ -243,6 +229,17 @@ namespace LaunchSample.WPF.ViewModel
 		}
 
 		#endregion // Public Methods
+
+		#region Private Helpers
+
+		private bool IsSatisfyFilteringCondition(LaunchViewModel launch)
+		{
+			return (_launchStatusFilter == "All" || launch.Status == (LaunchStatus)Enum.Parse(typeof(LaunchStatus), _launchStatusFilter))
+				   && (_launchCityFilter == "All" || launch.City == _launchCityFilter)
+				   && (_launchFromFilter <= launch.StartDateTime && launch.EndDateTime <= _launchToFilter);
+		}
+
+		#endregion Private Helpers
 
 		#region Base Class Overrides
 

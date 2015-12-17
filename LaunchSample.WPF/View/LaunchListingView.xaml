@@ -19,6 +19,15 @@
 				  SelectedItem="{Binding SelectedLaunch, Mode=TwoWay}"
 				  AutoGenerateColumns="False" 
 				  SelectionMode="Single">
+			<DataGrid.RowStyle>
+				<Style TargetType="{x:Type DataGridRow}">
+					<Style.Triggers>
+						<DataTrigger Binding="{Binding IsHidden}"  Value="True">
+							<Setter Property="Visibility" Value="Collapsed"/>
+						</DataTrigger>
+					</Style.Triggers>
+				</Style>
+			</DataGrid.RowStyle>
 			<DataGrid.Columns>
 				<DataGridTextColumn Header="Id" Binding="{Binding Id}" Visibility="Hidden"/>
 				<DataGridTextColumn Header="City" Binding="{Binding City}"/>
@@ -47,13 +56,13 @@
 			</Grid.RowDefinitions>
 
 			<ComboBox Grid.Row="0" Grid.Column="0" 
-				ItemsSource="{Binding Path=LaunchCityOptions, Mode=OneTime}"
-				SelectedItem="{Binding Path=LaunchCity}"/>
-			<DatePicker Grid.Row="0" Grid.Column="2" SelectedDate="{Binding LaunchFrom,Mode=TwoWay}"/>
-			<DatePicker Grid.Row="0" Grid.Column="4" SelectedDate="{Binding LaunchTo,Mode=TwoWay}"/>
+				ItemsSource="{Binding Path=LaunchCityFilterOptions, Mode=OneTime}"
+				SelectedItem="{Binding Path=LaunchCityFilter}"/>
+			<DatePicker Grid.Row="0" Grid.Column="2" SelectedDate="{Binding LaunchFromFilter,Mode=TwoWay}"/>
+			<DatePicker Grid.Row="0" Grid.Column="4" SelectedDate="{Binding LaunchToFilter,Mode=TwoWay}"/>
 			<ComboBox Grid.Row="0" Grid.Column="6" 
-				ItemsSource="{Binding Path=LaunchStatusOptions, Mode=OneTime}"
-				SelectedItem="{Binding Path=LaunchStatus}"/>
+				ItemsSource="{Binding Path=LaunchStatusFilterOptions, Mode=OneTime}"
+				SelectedItem="{Binding Path=LaunchStatusFilter}"/>
 
 			<Button Grid.Row="2" Grid.Column="0" Content="Add"/>
 			<Button Grid.Row="2" Grid.Column="2" Content="Edit"/>
