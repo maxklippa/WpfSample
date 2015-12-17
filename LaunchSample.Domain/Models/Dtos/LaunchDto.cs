@@ -71,12 +71,16 @@ namespace LaunchSample.Domain.Models.Dtos
 
 		private string ValidateEndDateTime()
 		{
-			throw new NotImplementedException();
+			return EndDateTime < StartDateTime
+				? "Start time can't be greater than the end time"
+				: null;
 		}
 
 		private string ValidateStartDateTime()
 		{
-			throw new NotImplementedException();
+			return EndDateTime < StartDateTime
+				? "End time can't be less than the start time"
+				: null;
 		}
 
 		private string ValidateCity()
