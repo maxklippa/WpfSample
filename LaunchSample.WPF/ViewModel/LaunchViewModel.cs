@@ -13,7 +13,6 @@ namespace LaunchSample.WPF.ViewModel
 		private readonly LaunchDto _launch;
 		private readonly LaunchService _launchService;
 
-		private bool _isSelected;
 		private RelayCommand _saveCommand;
 
 		#endregion // Fields
@@ -123,20 +122,6 @@ namespace LaunchSample.WPF.ViewModel
 		#endregion // Launch Properties
 
 		#region Presentation Properties
-
-		public bool IsSelected
-		{
-			get { return _isSelected; }
-			set
-			{
-				if (value == _isSelected)
-					return;
-
-				_isSelected = value;
-
-				base.OnPropertyChanged("IsSelected");
-			}
-		}
 
 		public ICommand SaveCommand
 		{

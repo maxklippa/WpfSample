@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
 using LaunchSample.BLL.EventArguments;
@@ -57,6 +58,8 @@ namespace LaunchSample.WPF.ViewModel
 
 		public ObservableCollection<LaunchViewModel> AllLaunches { get; private set; }
 
+		public LaunchViewModel SelectedLaunch { get; set; }
+
 		public ICommand CreateLaunchCommand
 		{
 			get
@@ -109,7 +112,11 @@ namespace LaunchSample.WPF.ViewModel
 
 		private void DeleteLaunch()
 		{
-
+			if (SelectedLaunch != null)
+			{
+				_launchService.Delete(SelectedLaunch.Id);
+				AllLaunches.Remove(SelectedLaunch);
+			}
 		}
 
 		#endregion // Public Methods

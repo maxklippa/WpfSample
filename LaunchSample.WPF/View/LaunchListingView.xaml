@@ -13,7 +13,12 @@
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 
-		<DataGrid Grid.Row="0" Grid.Column="0" Height="200" ItemsSource="{Binding Path=AllLaunches}" AutoGenerateColumns="False" SelectionMode="Single">
+		<DataGrid Grid.Row="0" Grid.Column="0" 
+				  Height="200" 
+				  ItemsSource="{Binding Path=AllLaunches}" 
+				  SelectedItem="{Binding SelectedLaunch, Mode=TwoWay}"
+				  AutoGenerateColumns="False" 
+				  SelectionMode="Single">
 			<DataGrid.Columns>
 				<DataGridTextColumn Header="Id" Binding="{Binding Id}" Visibility="Hidden"/>
 				<DataGridTextColumn Header="City" Binding="{Binding City}"/>
@@ -48,7 +53,7 @@
 
 			<Button Grid.Row="2" Grid.Column="0" Content="Add"/>
 			<Button Grid.Row="2" Grid.Column="2" Content="Edit"/>
-			<Button Grid.Row="2" Grid.Column="4" Content="Remove"/>
+			<Button Grid.Row="2" Grid.Column="4" Content="Remove" Command="{Binding Path=DeleteLaunchCommand}"/>
 		</Grid>
 
 	</Grid>
