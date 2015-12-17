@@ -8,6 +8,8 @@ using System.Linq;
 using System.Windows.Input;
 using LaunchSample.BLL.EventArguments;
 using LaunchSample.BLL.Services;
+using LaunchSample.Core.Enumerations;
+using LaunchSample.Domain.Models.Dtos;
 
 namespace LaunchSample.WPF.ViewModel
 {
@@ -20,6 +22,13 @@ namespace LaunchSample.WPF.ViewModel
 		private RelayCommand _createLaunchCommand;
 		private RelayCommand _updateLaunchCommand;
 		private RelayCommand _deleteLaunchCommand;
+
+		private string[] _launchStatusOptions;
+		private string _launchStatus;
+		private string[] _launchCityOptions;
+		private string _launchCity;
+		private DateTime _launchFrom;
+		private DateTime _launchTo;
 
 		#endregion // Fields
 
@@ -36,12 +45,17 @@ namespace LaunchSample.WPF.ViewModel
 			_launchService.LaunchUpdated += OnLaunchUpdated;
 			_launchService.LaunchDeleted += OnLaunchDeleted;
 
+			_launchStatus = "All";
+			_launchCity = "All";
+			_launchFrom = DateTime.Now.AddYears(-1);
+			_launchTo = DateTime.Now;
+
 			CreateLaunchListing();
 		}
 
-		private void CreateLaunchListing()
+		private void CreateLaunchListing(string city = null, DateTime? from = null, DateTime? to = null, LaunchStatus? status = null)
 		{
-			List<LaunchViewModel> all = _launchService.All().Select(l => new LaunchViewModel(l, _launchService)).ToList();
+			List<LaunchViewModel> all = _launchService.GetAll(city, from, to, status).Select(l => new LaunchViewModel(l, _launchService)).ToList();
 
 			foreach (LaunchViewModel launchViewModel in all)
 			{
@@ -59,6 +73,113 @@ namespace LaunchSample.WPF.ViewModel
 		public ObservableCollection<LaunchViewModel> AllLaunches { get; private set; }
 
 		public LaunchViewModel SelectedLaunch { get; set; }
+
+		public string LaunchStatus
+		{
+			get { return _launchStatus; }
+			set
+			{
+				if (value == _launchStatus)
+					return;
+
+				_launchStatus = value;
+
+				if (_launchStatus == "All")
+				{
+					//CreateLaunchListing();
+				}
+				else
+				{
+//					AllLaunches.
+				}
+
+				base.OnPropertyChanged("LaunchStatus");
+			}
+		}
+
+		public string[] LaunchStatusOptions
+		{
+			get
+			{
+				if (_launchStatusOptions == null)
+				{
+					var statuses = Enum.GetValues(typeof (LaunchStatus)).Cast<LaunchStatus>().Select(s => s.ToString()).ToList();
+					statuses.Insert(0, "All");
+					_launchStatusOptions = statuses.ToArray();
+				}
+				return _launchStatusOptions;
+			}
+		}
+
+		public string LaunchCity
+		{
+			get { return _launchCity; }
+			set
+			{
+				if (value == _launchCity)
+					return;
+
+				_launchCity = value;
+
+				if (_launchCity == "All")
+				{
+					//CreateLaunchListing();
+				}
+				else
+				{
+					//CreateLaunchListing(null, null, null, (LaunchStatus)Enum.Parse(typeof(LaunchStatus), _launchStatus));
+				}
+
+				base.OnPropertyChanged("LaunchCity");
+			}
+		}
+
+		public string[] LaunchCityOptions
+		{
+			get
+			{
+				if (_launchCityOptions == null)
+				{
+					var towns = _launchService.GetAll().Select(l => l.City);
+					var cities = new HashSet<string>(towns).ToList();
+					cities.Insert(0, "All");
+					_launchCityOptions = cities.ToArray();
+				}
+				return _launchCityOptions;
+			}
+		}
+
+		public DateTime LaunchFrom
+		{
+			get { return _launchFrom; }
+			set
+			{
+				if (value == _launchFrom)
+					return;
+
+				_launchFrom = value;
+
+				// todo: filtering
+
+				base.OnPropertyChanged("LaunchFrom");
+			}
+		}
+
+		public DateTime LaunchTo
+		{
+			get { return _launchTo; }
+			set
+			{
+				if (value == _launchTo)
+					return;
+
+				_launchTo = value;
+
+				// todo: filtering
+
+				base.OnPropertyChanged("LaunchTo");
+			}
+		}
 
 		public ICommand CreateLaunchCommand
 		{
@@ -102,21 +223,23 @@ namespace LaunchSample.WPF.ViewModel
 
 		private void CreateLaunch()
 		{
-
+			var newLaunch = new LaunchDto();
+			var workspace = new LaunchViewModel(newLaunch, _launchService);
 		}
 
 		private void UpdateLaunch()
 		{
+			if (SelectedLaunch == null) return;
 
+			var workspace = SelectedLaunch;
 		}
 
 		private void DeleteLaunch()
 		{
-			if (SelectedLaunch != null)
-			{
-				_launchService.Delete(SelectedLaunch.Id);
-				AllLaunches.Remove(SelectedLaunch);
-			}
+			if (SelectedLaunch == null) return;
+
+			_launchService.Delete(SelectedLaunch.Id);
+			AllLaunches.Remove(SelectedLaunch);
 		}
 
 		#endregion // Public Methods

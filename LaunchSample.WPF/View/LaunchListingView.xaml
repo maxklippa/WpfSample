@@ -46,10 +46,14 @@
 				<RowDefinition Height="25"/>
 			</Grid.RowDefinitions>
 
-			<ComboBox Grid.Row="0" Grid.Column="0" />
-			<DatePicker Grid.Row="0" Grid.Column="2" />
-			<DatePicker Grid.Row="0" Grid.Column="4" />
-			<ComboBox Grid.Row="0" Grid.Column="6" />
+			<ComboBox Grid.Row="0" Grid.Column="0" 
+				ItemsSource="{Binding Path=LaunchCityOptions, Mode=OneTime}"
+				SelectedItem="{Binding Path=LaunchCity}"/>
+			<DatePicker Grid.Row="0" Grid.Column="2" SelectedDate="{Binding LaunchFrom,Mode=TwoWay}"/>
+			<DatePicker Grid.Row="0" Grid.Column="4" SelectedDate="{Binding LaunchTo,Mode=TwoWay}"/>
+			<ComboBox Grid.Row="0" Grid.Column="6" 
+				ItemsSource="{Binding Path=LaunchStatusOptions, Mode=OneTime}"
+				SelectedItem="{Binding Path=LaunchStatus}"/>
 
 			<Button Grid.Row="2" Grid.Column="0" Content="Add"/>
 			<Button Grid.Row="2" Grid.Column="2" Content="Edit"/>
