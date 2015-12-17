@@ -43,6 +43,11 @@ namespace LaunchSample.BLL.Services
 			_launchRepository.Delete(id);
 		}
 
+		public bool IsAlreadyExists(int id)
+		{
+			return _launchRepository.All().Any(l => l.Id == id);
+		}
+
 		public IEnumerable<LaunchDto> GetAll(string city = null, DateTime? from = null, DateTime? to = null, LaunchStatus? status = null)
 		{
 			var launches = _launchRepository.All().Where(l => (city == null || l.City == city)

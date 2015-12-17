@@ -14,6 +14,7 @@ namespace LaunchSample.BLL.Services
 		void Update(LaunchDto launch);
 		void Delete(int id);
 
+		bool IsAlreadyExists(int id);
 		IEnumerable<LaunchDto> GetAll(string city = null, DateTime? from = null, DateTime? to = null, LaunchStatus? status = null);
 		void SaveAll(IEnumerable<LaunchDto> launches);
 	}

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using LaunchSample.Domain.Mapping;
+using LaunchSample.WPF.ViewModel;
 
 namespace LaunchSample.WPF
 {
@@ -18,6 +13,16 @@ namespace LaunchSample.WPF
 		{
 			base.OnStartup(e);
 			AutoMapperConfiguration.Configure();
+
+			var window = new MainWindow();
+
+			var viewModel = new MainWindowViewModel();
+
+			// todo: close event
+
+			window.DataContext = viewModel;
+
+			window.Show();
 		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using LaunchSample.Core.Enumerations;
 
 namespace LaunchSample.Domain.Models.Dtos
@@ -30,6 +31,14 @@ namespace LaunchSample.Domain.Models.Dtos
 		#endregion IDataErrorInfo Members
 
 		#region Validation
+
+		public bool IsValid
+		{
+			get
+			{
+				return ValidatedProperties.All(property => GetValidationError(property) == null);
+			}
+		}
 
 		static readonly string[] ValidatedProperties = 
 		{ 
@@ -87,7 +96,7 @@ namespace LaunchSample.Domain.Models.Dtos
 		{
 			return string.IsNullOrWhiteSpace(City) ? "City is missing" : null;
 		}
-
+		
 		#endregion // Validation
 	}
 }

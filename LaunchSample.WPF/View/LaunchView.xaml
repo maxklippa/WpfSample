@@ -4,7 +4,7 @@
 			 HorizontalAlignment="Center"
 			 VerticalAlignment="Center" 
 			 Width="300">
-    <Grid Margin="10">
+	<Grid Margin="10">
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="Auto" />
 			<ColumnDefinition Width="10" />
@@ -24,13 +24,13 @@
 			<RowDefinition Height="10" />
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
-		
+
 		<Label Grid.Row="0" Grid.Column="0" Content="City"/>
 		<TextBox Grid.Row="0" Grid.Column="2"/>
 
 		<Label Grid.Row="2" Grid.Column="0" Content="Start"/>
 		<DatePicker Grid.Row="2" Grid.Column="2"/>
-		
+
 		<Label Grid.Row="4" Grid.Column="0" Content="End"/>
 		<DatePicker Grid.Row="4" Grid.Column="2"/>
 
@@ -40,6 +40,7 @@
 		<Label Grid.Row="8" Grid.Column="0" Content="Status"/>
 		<ComboBox Grid.Row="8" Grid.Column="2"/>
 
-		<Button Grid.Row="10" Grid.Column="2" HorizontalAlignment="Right" Width="50" Content="Save"/>
+		<Button Grid.Row="10" Grid.Column="2" HorizontalAlignment="Right" Width="50" Content="Save" Margin="0,0,55,0"/>
+		<Button Grid.Row="10" Grid.Column="2" HorizontalAlignment="Right" Width="50" Content="Cancel"/>
 	</Grid>
 </UserControl>
