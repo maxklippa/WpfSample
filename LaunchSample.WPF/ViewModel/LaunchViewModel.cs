@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Input;
 using LaunchSample.BLL.Services;
 using LaunchSample.Core.Enumerations;
@@ -6,16 +7,20 @@ using LaunchSample.Domain.Models.Dtos;
 
 namespace LaunchSample.WPF.ViewModel
 {
-	public class LaunchViewModel : WorkspaceViewModel
+	public class LaunchViewModel : ViewModelBase
 	{
 		#region Fields
 
 		private readonly LaunchDto _launch;
 		private readonly LaunchService _launchService;
 
-
 		private bool _isHidden;
+		private bool _isHiddenInList;
 		private RelayCommand _saveCommand;
+		private RelayCommand _cancelCommand;
+
+		private LaunchStatus _launchStatus;
+		private LaunchStatus[] _launchStatusOptions;
 
 		#endregion // Fields
 
@@ -28,6 +33,8 @@ namespace LaunchSample.WPF.ViewModel
 
 			if (launchService == null)
 				throw new ArgumentNullException("launchService");
+
+			_launchStatus = LaunchStatus.Success;
 
 			_launch = launch;
 			_launchService = launchService;
@@ -125,6 +132,32 @@ namespace LaunchSample.WPF.ViewModel
 
 		#region Presentation Properties
 
+		public LaunchStatus LaunchStatus
+		{
+			get { return _launchStatus; }
+			set
+			{
+				if (value == _launchStatus)
+					return;
+
+				_launchStatus = value;
+
+				base.OnPropertyChanged("LaunchStatus");
+			}
+		}
+
+		public LaunchStatus[] LaunchStatusOptions
+		{
+			get
+			{
+				if (_launchStatusOptions == null)
+				{
+					_launchStatusOptions = Enum.GetValues(typeof (LaunchStatus)).Cast<LaunchStatus>().ToArray();
+				}
+				return _launchStatusOptions;
+			}
+		}
+
 		public bool IsHidden
 		{
 			get
@@ -142,6 +175,23 @@ namespace LaunchSample.WPF.ViewModel
 			}
 		}
 
+		public bool IsHiddenInList
+		{
+			get
+			{
+				return _isHiddenInList;
+			}
+			set
+			{
+				if (value == _isHiddenInList)
+					return;
+
+				_isHiddenInList = value;
+
+				base.OnPropertyChanged("IsHiddenInList");
+			}
+		}
+
 		public ICommand SaveCommand
 		{
 			get
@@ -154,6 +204,21 @@ namespace LaunchSample.WPF.ViewModel
 						);
 				}
 				return _saveCommand;
+			}
+		}
+
+		public ICommand CancelCommand
+		{
+			get
+			{
+				if (_cancelCommand == null)
+				{
+					_cancelCommand = new RelayCommand(
+						param => Cancel(),
+						param => CanCancel
+						);
+				}
+				return _cancelCommand;
 			}
 		}
 
@@ -175,7 +240,14 @@ namespace LaunchSample.WPF.ViewModel
 				_launchService.Update(_launch);
 			}
 
+			IsHidden = true;
+
 			base.OnPropertyChanged("DisplayName");
+		}
+
+		private void Cancel()
+		{
+			IsHidden = true;
 		}
 
 		#endregion // Public Methods
@@ -185,6 +257,8 @@ namespace LaunchSample.WPF.ViewModel
 		public bool IsNewLaunch { get { return !_launchService.IsAlreadyExists(_launch.Id); } }
 
 		public bool CanSave { get { return _launch.IsValid; } }
+		
+		public bool CanCancel { get { return true; } }
 
 		#endregion // Private Helpers
 	}

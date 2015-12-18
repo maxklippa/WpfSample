@@ -10,6 +10,7 @@ using LaunchSample.BLL.EventArguments;
 using LaunchSample.BLL.Services;
 using LaunchSample.Core.Enumerations;
 using LaunchSample.Domain.Models.Dtos;
+using LaunchSample.WPF.EventArguments;
 
 namespace LaunchSample.WPF.ViewModel
 {
@@ -70,6 +71,9 @@ namespace LaunchSample.WPF.ViewModel
 
 		#region Public Interface
 
+		public event EventHandler<LaunchWillCreatedEventArgs> LaunchWillCreated;
+		public event EventHandler<LaunchWillUpdatedEventArgs> LaunchWillUpdated;
+
 		public ObservableCollection<LaunchViewModel> AllLaunches { get; private set; }
 
 		public LaunchViewModel SelectedLaunch { get; set; }
@@ -84,7 +88,7 @@ namespace LaunchSample.WPF.ViewModel
 
 				_launchStatusFilter = value;
 
-				AllLaunches.ToList().ForEach(l => l.IsHidden = !IsSatisfyFilteringCondition(l));
+				AllLaunches.ToList().ForEach(l => l.IsHiddenInList = !IsSatisfyFilteringCondition(l));
 
 				base.OnPropertyChanged("LaunchStatusFilter");
 			}
@@ -114,7 +118,7 @@ namespace LaunchSample.WPF.ViewModel
 
 				_launchCityFilter = value;
 
-				AllLaunches.ToList().ForEach(l => l.IsHidden = !IsSatisfyFilteringCondition(l));
+				AllLaunches.ToList().ForEach(l => l.IsHiddenInList = !IsSatisfyFilteringCondition(l));
 
 				base.OnPropertyChanged("LaunchCityFilter");
 			}
@@ -145,7 +149,7 @@ namespace LaunchSample.WPF.ViewModel
 
 				_launchFromFilter = value;
 
-				AllLaunches.ToList().ForEach(l => l.IsHidden = !IsSatisfyFilteringCondition(l));
+				AllLaunches.ToList().ForEach(l => l.IsHiddenInList = !IsSatisfyFilteringCondition(l));
 
 				base.OnPropertyChanged("LaunchFromFilter");
 			}
@@ -161,7 +165,7 @@ namespace LaunchSample.WPF.ViewModel
 
 				_launchToFilter = value;
 
-				AllLaunches.ToList().ForEach(l => l.IsHidden = !IsSatisfyFilteringCondition(l));
+				AllLaunches.ToList().ForEach(l => l.IsHiddenInList = !IsSatisfyFilteringCondition(l));
 
 				base.OnPropertyChanged("LaunchToFilter");
 			}
@@ -210,14 +214,18 @@ namespace LaunchSample.WPF.ViewModel
 		private void CreateLaunch()
 		{
 			var newLaunch = new LaunchDto();
-			var workspace = new LaunchViewModel(newLaunch, _launchService);
+			var newLaunchViewModel = new LaunchViewModel(newLaunch, _launchService);
+
+			if (LaunchWillCreated != null)
+				LaunchWillCreated(this, new LaunchWillCreatedEventArgs(newLaunchViewModel));
 		}
 
 		private void UpdateLaunch()
 		{
 			if (SelectedLaunch == null) return;
 
-			var workspace = SelectedLaunch;
+			if (LaunchWillUpdated != null)
+				LaunchWillUpdated(this, new LaunchWillUpdatedEventArgs(SelectedLaunch));
 		}
 
 		private void DeleteLaunch()

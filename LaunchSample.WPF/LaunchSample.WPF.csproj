@@ -53,12 +53,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="EventArguments\LaunchWillUpdatedEventArgs.cs" />
+    <Compile Include="EventArguments\LaunchWillCreatedEventArgs.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="ViewModel\LaunchListingViewModel.cs" />
     <Compile Include="ViewModel\LaunchViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
-    <Compile Include="ViewModel\WorkspaceViewModel.cs" />
     <Compile Include="View\LaunchListingView.xaml.cs">
       <DependentUpon>LaunchListingView.xaml</DependentUpon>
     </Compile>

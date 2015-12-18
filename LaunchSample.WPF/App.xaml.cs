@@ -19,14 +19,6 @@ namespace LaunchSample.WPF
 
 			var viewModel = new MainWindowViewModel();
 
-			EventHandler handler = null;
-			handler = delegate
-			{
-				viewModel.RequestClose -= handler;
-				window.Close();
-			};
-			viewModel.RequestClose += handler;
-
 			window.DataContext = viewModel;
 
 			window.Show();

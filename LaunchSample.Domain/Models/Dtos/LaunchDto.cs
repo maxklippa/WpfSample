@@ -8,6 +8,17 @@ namespace LaunchSample.Domain.Models.Dtos
 {
 	public class LaunchDto : IDataErrorInfo
 	{
+		#region Constructor
+
+		public LaunchDto()
+		{
+			StartDateTime = DateTime.Now;
+			EndDateTime = DateTime.Now;
+			Month = DateTime.Now;
+		}
+
+		#endregion // Constructor
+
 		#region State Properties
 
 		public int Id { get; set; }

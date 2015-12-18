@@ -1,20 +1,18 @@
 ﻿<UserControl x:Class="LaunchSample.WPF.View.LaunchListingView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             HorizontalAlignment="Center"
-             VerticalAlignment="Center"
-			 Width="500">
+             MinWidth="500"  Background="CornflowerBlue">
 	
 	<Grid Margin="10">
 		
 		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"></RowDefinition>
+			<RowDefinition Height="*"></RowDefinition>
 			<RowDefinition Height="10"></RowDefinition>
-			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
 
 		<DataGrid Grid.Row="0" Grid.Column="0" 
-				  Height="200" 
+				  MinHeight="200" 
 				  ItemsSource="{Binding Path=AllLaunches}" 
 				  SelectedItem="{Binding SelectedLaunch, Mode=TwoWay}"
 				  AutoGenerateColumns="False" 
@@ -22,7 +20,7 @@
 			<DataGrid.RowStyle>
 				<Style TargetType="{x:Type DataGridRow}">
 					<Style.Triggers>
-						<DataTrigger Binding="{Binding IsHidden}"  Value="True">
+						<DataTrigger Binding="{Binding IsHiddenInList}"  Value="True">
 							<Setter Property="Visibility" Value="Collapsed"/>
 						</DataTrigger>
 					</Style.Triggers>
@@ -64,8 +62,8 @@
 				ItemsSource="{Binding Path=LaunchStatusFilterOptions, Mode=OneTime}"
 				SelectedItem="{Binding Path=LaunchStatusFilter}"/>
 
-			<Button Grid.Row="2" Grid.Column="0" Content="Add"/>
-			<Button Grid.Row="2" Grid.Column="2" Content="Edit"/>
+			<Button Grid.Row="2" Grid.Column="0" Content="Add" Command="{Binding Path=CreateLaunchCommand}"/>
+			<Button Grid.Row="2" Grid.Column="2" Content="Edit" Command="{Binding Path=UpdateLaunchCommand}"/>
 			<Button Grid.Row="2" Grid.Column="4" Content="Remove" Command="{Binding Path=DeleteLaunchCommand}"/>
 		</Grid>
 
