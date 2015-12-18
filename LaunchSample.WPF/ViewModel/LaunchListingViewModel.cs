@@ -6,8 +6,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
-using LaunchSample.BLL.EventArguments;
 using LaunchSample.BLL.Services;
+using LaunchSample.BLL.Services.LaunchService;
 using LaunchSample.Core.Enumerations;
 using LaunchSample.Domain.Models.Dtos;
 using LaunchSample.WPF.EventArguments;
@@ -38,7 +38,9 @@ namespace LaunchSample.WPF.ViewModel
 		public LaunchListingViewModel(LaunchService launchService)
 		{
 			if (launchService == null)
+			{
 				throw new ArgumentNullException("launchService");
+			}
 
 			_launchService = launchService;
 

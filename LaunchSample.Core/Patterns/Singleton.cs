@@ -6,7 +6,6 @@
 	/// <typeparam name="T"></typeparam>
 	public class Singleton<T> where T : new()
 	{
-
 		/// <summary>
 		/// Static field for Singleton pattern realization
 		/// </summary>

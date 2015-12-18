@@ -9,8 +9,7 @@ namespace LaunchSample.Domain.Extensions
 		{
 			var sourceType = typeof(TSource);
 			var destinationType = typeof(TDestination);
-			var existingMaps = Mapper.GetAllTypeMaps().First(x => x.SourceType == sourceType
-				&& x.DestinationType == destinationType);
+			var existingMaps = Mapper.GetAllTypeMaps().First(x => x.SourceType == sourceType && x.DestinationType == destinationType);
 			foreach (var property in existingMaps.GetUnmappedPropertyNames())
 			{
 				expression.ForMember(property, opt => opt.Ignore());

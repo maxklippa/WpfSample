@@ -1,7 +1,7 @@
 ﻿using System;
 using LaunchSample.Domain.Models.Dtos;
 
-namespace LaunchSample.BLL.EventArguments
+namespace LaunchSample.BLL.Services.LaunchService
 {
 	public class LaunchUpdatedEventArgs : EventArgs
 	{

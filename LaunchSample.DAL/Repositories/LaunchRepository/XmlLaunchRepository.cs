@@ -5,16 +5,21 @@ using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 using LaunchSample.Core.Patterns;
-using LaunchSample.Domain.Models;
 using LaunchSample.Domain.Models.Entities;
 
-namespace LaunchSample.DAL.Repositories
+namespace LaunchSample.DAL.Repositories.LaunchRepository
 {
 	public class XmlLaunchRepository : Singleton<XmlLaunchRepository>, ILaunchRepository
 	{
+		#region Private fields
+
 		private readonly string _filename;
 		private readonly XmlSerializer _serializer;
-		private readonly IList<Launch> _launches; 
+		private readonly IList<Launch> _launches;
+
+		#endregion // Private fields
+
+		#region Constructor
 
 		public XmlLaunchRepository()
 		{
@@ -54,6 +59,10 @@ namespace LaunchSample.DAL.Repositories
 			_launches = GetLaunchesFromFile().ToList();
 		}
 
+		#endregion // Constructor
+
+		#region ILaunchRepository Members
+
 		public IQueryable<Launch> All()
 		{
 			return _launches.AsQueryable();
@@ -68,14 +77,15 @@ namespace LaunchSample.DAL.Repositories
 			return launch;
 		}
 
-		public Launch Read(int id)
+		public Launch Find(int id)
 		{
 			return _launches.FirstOrDefault(l => l.Id == id);
 		}
 
 		public void Update(Launch launch)
 		{
-			var entity = _launches.Select((v, i) => new { Launch = v, Index = i }).FirstOrDefault(x => x.Launch.Id == launch.Id);
+			var entity = _launches.Select((v, i) => new {Launch = v, Index = i})
+			                      .FirstOrDefault(x => x.Launch.Id == launch.Id);
 			if (entity == null)
 			{
 				return;
@@ -86,7 +96,8 @@ namespace LaunchSample.DAL.Repositories
 
 		public void Delete(int id)
 		{
-			var entity = _launches.Select((v, i) => new { Launch = v, Index = i }).FirstOrDefault(x => x.Launch.Id == id);
+			var entity = _launches.Select((v, i) => new {Launch = v, Index = i})
+			                      .FirstOrDefault(x => x.Launch.Id == id);
 			if (entity == null)
 			{
 				return;
@@ -94,6 +105,10 @@ namespace LaunchSample.DAL.Repositories
 			_launches.RemoveAt(entity.Index);
 			SaveLaunchesToFile(_launches);
 		}
+
+		#endregion // ILaunchRepository Members
+
+		#region Private Methods
 
 		private IEnumerable<Launch> GetLaunchesFromFile()
 		{
@@ -112,9 +127,15 @@ namespace LaunchSample.DAL.Repositories
 			}
 		}
 
+		#endregion // Private Methods
+
+		#region Internal Classes
+
 		public class LaunchList
 		{
 			public Launch[] Launches { get; set; }
 		}
+
+		#endregion Internal Classes
 	}
 }

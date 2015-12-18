@@ -64,10 +64,10 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\DBLaunchRepository.cs" />
-    <Compile Include="Repositories\ILaunchRepository.cs" />
-    <Compile Include="Repositories\LaunchRepository.cs" />
-    <Compile Include="Repositories\XmlLaunchRepository.cs" />
+    <Compile Include="Repositories\LaunchRepository\DBLaunchRepository.cs" />
+    <Compile Include="Repositories\LaunchRepository\ILaunchRepository.cs" />
+    <Compile Include="Repositories\LaunchRepository\LaunchRepositoryFactory.cs" />
+    <Compile Include="Repositories\LaunchRepository\XmlLaunchRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -1,19 +1,28 @@
 ﻿using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
-using LaunchSample.Domain.Models;
 using LaunchSample.Domain.Models.Entities;
 
-namespace LaunchSample.DAL.Repositories
+namespace LaunchSample.DAL.Repositories.LaunchRepository
 {
 	public class DbLaunchRepository : ILaunchRepository
 	{
+		#region Private fields
+
 		private readonly LaunchSampleDbContext _context;
+
+		#endregion // Private fields
+
+		#region Constructor
 
 		public DbLaunchRepository()
 		{
 			_context = new LaunchSampleDbContext();
 		}
+
+		#endregion
+
+		#region ILaunchRepository Members
 
 		public IQueryable<Launch> All()
 		{
@@ -35,7 +44,7 @@ namespace LaunchSample.DAL.Repositories
 			return launch;
 		}
 
-		public Launch Read(int id)
+		public Launch Find(int id)
 		{
 			return _context.Launches.FirstOrDefault(l => l.Id == id);
 		}
@@ -74,5 +83,7 @@ namespace LaunchSample.DAL.Repositories
 
 			_context.SaveChanges();
 		}
+
+		#endregion // ILaunchRepository Members
 	}
 }

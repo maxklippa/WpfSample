@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows.Input;
 using LaunchSample.BLL.Services;
+using LaunchSample.BLL.Services.LaunchService;
 using LaunchSample.Core.Enumerations;
 using LaunchSample.Domain.Models.Dtos;
 
@@ -231,7 +232,7 @@ namespace LaunchSample.WPF.ViewModel
 			if (!_launch.IsValid)
 				throw new InvalidOperationException("Cannot save an invalid launch.");
 
-			if (this.IsNewLaunch)
+			if (IsNewLaunch)
 			{
 				_launchService.Create(_launch);
 			}
@@ -252,14 +253,12 @@ namespace LaunchSample.WPF.ViewModel
 
 		#endregion // Public Methods
 
-		#region Private Helpers
+		#region Private Properties
 
-		public bool IsNewLaunch { get { return !_launchService.IsAlreadyExists(_launch.Id); } }
+		private bool IsNewLaunch { get { return !_launchService.IsAlreadyExists(_launch.Id); } }
+		private bool CanSave { get { return _launch.IsValid; } }
+		private bool CanCancel { get { return true; } }
 
-		public bool CanSave { get { return _launch.IsValid; } }
-		
-		public bool CanCancel { get { return true; } }
-
-		#endregion // Private Helpers
+		#endregion // Private Properties
 	}
 }
