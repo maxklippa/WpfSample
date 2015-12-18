@@ -2,12 +2,9 @@
 using LaunchSample.BLL.Services;
 using LaunchSample.BLL.Services.LaunchService;
 using LaunchSample.Domain.Models.Dtos;
-using LaunchSample.WPF.EventArguments;
 
 namespace LaunchSample.WPF.ViewModel
 {
-	
-
 	public class MainWindowViewModel : ViewModelBase
 	{
 		#region Fields
@@ -26,7 +23,7 @@ namespace LaunchSample.WPF.ViewModel
 
 			_launchService = new LaunchService();
 
-			_launch = new LaunchViewModel(new LaunchDto(), _launchService) {IsHidden = true};
+			_launch = new LaunchViewModel(new LaunchDto(), _launchService);
 
 			Launches.LaunchWillCreated += OnLaunchWillCreated;
 			Launches.LaunchWillUpdated += OnLaunchWillUpdated;
@@ -50,7 +47,9 @@ namespace LaunchSample.WPF.ViewModel
 			set
 			{
 				if (value == _launch)
+				{
 					return;
+				}
 
 				_launch = value;
 

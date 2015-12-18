@@ -53,8 +53,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="EventArguments\LaunchWillUpdatedEventArgs.cs" />
-    <Compile Include="EventArguments\LaunchWillCreatedEventArgs.cs" />
+    <Compile Include="LaunchWillUpdatedEventArgs.cs" />
+    <Compile Include="LaunchWillCreatedEventArgs.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="ViewModel\LaunchListingViewModel.cs" />
     <Compile Include="ViewModel\LaunchViewModel.cs" />

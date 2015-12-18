@@ -1,8 +1,7 @@
 ﻿using System;
-using LaunchSample.Domain.Models.Dtos;
 using LaunchSample.WPF.ViewModel;
 
-namespace LaunchSample.WPF.EventArguments
+namespace LaunchSample.WPF
 {
 	public class LaunchWillUpdatedEventArgs : EventArgs
 	{

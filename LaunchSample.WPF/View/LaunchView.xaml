@@ -5,15 +5,6 @@
 			 VerticalAlignment="Top" 
 			 Width="300">
 	<Grid Margin="10">
-<!--		<Grid.Style>-->
-<!--			<Style  TargetType="{x:Type Grid}">-->
-<!--				<Style.Triggers>-->
-<!--					<DataTrigger Binding="{Binding IsHidden}"  Value="True">-->
-<!--						<Setter Property="Visibility" Value="Collapsed"/>-->
-<!--					</DataTrigger>-->
-<!--				</Style.Triggers>-->
-<!--			</Style>-->
-<!--		</Grid.Style>-->
 
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="Auto" />

@@ -1,21 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
-using LaunchSample.BLL.Services;
 using LaunchSample.BLL.Services.LaunchService;
 using LaunchSample.Core.Enumerations;
 using LaunchSample.Domain.Models.Dtos;
-using LaunchSample.WPF.EventArguments;
 
 namespace LaunchSample.WPF.ViewModel
 {
 	public class LaunchListingViewModel : ViewModelBase
 	{
+		private const string ALL = "All";
+
 		#region Fields
 
 		private readonly LaunchService _launchService;
@@ -48,25 +45,24 @@ namespace LaunchSample.WPF.ViewModel
 			_launchService.LaunchUpdated += OnLaunchUpdated;
 			_launchService.LaunchDeleted += OnLaunchDeleted;
 
-			_launchStatusFilter = "All";
-			_launchCityFilter = "All";
+			_launchStatusFilter = ALL;
+			_launchCityFilter = ALL;
 			_launchFromFilter = DateTime.Now.AddYears(-1);
 			_launchToFilter = DateTime.Now;
 
 			CreateLaunchListing();
 		}
 
-		private void CreateLaunchListing(string city = null, DateTime? from = null, DateTime? to = null, LaunchStatus? status = null)
+		private void CreateLaunchListing(string city = null,
+		                                 DateTime? from = null,
+		                                 DateTime? to = null,
+		                                 LaunchStatus? status = null)
 		{
-			List<LaunchViewModel> all = _launchService.GetAll(city, from, to, status).Select(l => new LaunchViewModel(l, _launchService)).ToList();
-
-			foreach (LaunchViewModel launchViewModel in all)
-			{
-				launchViewModel.PropertyChanged += OnLaunchViewModelPropertyChanged;
-			}
+			var all = _launchService.GetAll(city, from, to, status)
+			                        .Select(l => new LaunchViewModel(l, _launchService))
+			                        .ToList();
 
 			AllLaunches = new ObservableCollection<LaunchViewModel>(all);
-			AllLaunches.CollectionChanged += OnCollectionChanged;
 		}
 
 		#endregion // Constructor
@@ -86,7 +82,9 @@ namespace LaunchSample.WPF.ViewModel
 			set
 			{
 				if (value == _launchStatusFilter)
+				{
 					return;
+				}
 
 				_launchStatusFilter = value;
 
@@ -102,8 +100,11 @@ namespace LaunchSample.WPF.ViewModel
 			{
 				if (_launchStatusFilterOptions == null)
 				{
-					var statuses = Enum.GetValues(typeof (LaunchStatus)).Cast<LaunchStatus>().Select(s => s.ToString()).ToList();
-					statuses.Insert(0, "All");
+					var statuses = Enum.GetValues(typeof (LaunchStatus))
+					                   .Cast<LaunchStatus>()
+					                   .Select(s => s.ToString())
+					                   .ToList();
+					statuses.Insert(0, ALL);
 					_launchStatusFilterOptions = statuses.ToArray();
 				}
 				return _launchStatusFilterOptions;
@@ -116,7 +117,9 @@ namespace LaunchSample.WPF.ViewModel
 			set
 			{
 				if (value == _launchCityFilter)
+				{
 					return;
+				}
 
 				_launchCityFilter = value;
 
@@ -134,7 +137,7 @@ namespace LaunchSample.WPF.ViewModel
 				{
 					var towns = _launchService.GetAll().Select(l => l.City);
 					var cities = new HashSet<string>(towns).ToList();
-					cities.Insert(0, "All");
+					cities.Insert(0, ALL);
 					_launchCityFilterOptions = cities.ToArray();
 				}
 				return _launchCityFilterOptions;
@@ -147,7 +150,9 @@ namespace LaunchSample.WPF.ViewModel
 			set
 			{
 				if (value == _launchFromFilter)
+				{
 					return;
+				}
 
 				_launchFromFilter = value;
 
@@ -163,7 +168,9 @@ namespace LaunchSample.WPF.ViewModel
 			set
 			{
 				if (value == _launchToFilter)
+				{
 					return;
+				}
 
 				_launchToFilter = value;
 
@@ -219,20 +226,30 @@ namespace LaunchSample.WPF.ViewModel
 			var newLaunchViewModel = new LaunchViewModel(newLaunch, _launchService);
 
 			if (LaunchWillCreated != null)
+			{
 				LaunchWillCreated(this, new LaunchWillCreatedEventArgs(newLaunchViewModel));
+			}
 		}
 
 		private void UpdateLaunch()
 		{
-			if (SelectedLaunch == null) return;
+			if (SelectedLaunch == null)
+			{
+				return;
+			}
 
 			if (LaunchWillUpdated != null)
+			{
 				LaunchWillUpdated(this, new LaunchWillUpdatedEventArgs(SelectedLaunch));
+			}
 		}
 
 		private void DeleteLaunch()
 		{
-			if (SelectedLaunch == null) return;
+			if (SelectedLaunch == null)
+			{
+				return;
+			}
 
 			_launchService.Delete(SelectedLaunch.Id);
 			AllLaunches.Remove(SelectedLaunch);
@@ -240,28 +257,30 @@ namespace LaunchSample.WPF.ViewModel
 
 		#endregion // Public Methods
 
-		#region Private Helpers
+		#region Private Methods
 
 		private bool IsSatisfyFilteringCondition(LaunchViewModel launch)
 		{
-			return (_launchStatusFilter == "All" || launch.Status == (LaunchStatus)Enum.Parse(typeof(LaunchStatus), _launchStatusFilter))
-				   && (_launchCityFilter == "All" || launch.City == _launchCityFilter)
-				   && (_launchFromFilter <= launch.StartDateTime && launch.EndDateTime <= _launchToFilter);
+			var launchStatusFilterValue = (LaunchStatus) Enum.Parse(typeof (LaunchStatus), _launchStatusFilter);
+
+			return (_launchStatusFilter == ALL || launch.Status == launchStatusFilterValue) &&
+			       (_launchCityFilter == ALL || launch.City == _launchCityFilter) &&
+			       (_launchFromFilter <= launch.StartDateTime) &&
+			       (launch.EndDateTime <= _launchToFilter);
 		}
 
-		#endregion Private Helpers
+		#endregion // Private Methods
 
 		#region Base Class Overrides
 
 		protected override void OnDispose()
 		{
-			foreach (LaunchViewModel launchVM in AllLaunches)
+			foreach (var launchVM in AllLaunches)
 			{
 				launchVM.Dispose();
 			}
 
 			AllLaunches.Clear();
-			AllLaunches.CollectionChanged -= OnCollectionChanged;
 
 			_launchService.LaunchCreated -= OnLaunchCreated;
 			_launchService.LaunchUpdated -= OnLaunchUpdated;
@@ -281,46 +300,28 @@ namespace LaunchSample.WPF.ViewModel
 		{
 			var viewModel = new LaunchViewModel(e.UpdatedLaunch, _launchService);
 
-			var entity = AllLaunches.Select((v, i) => new { Launch = v, Index = i }).FirstOrDefault(x => x.Launch.Id == viewModel.Id);
-			if (entity == null)
+			var launch = AllLaunches.Select((v, i) => new {Launch = v, Index = i})
+			                        .FirstOrDefault(x => x.Launch.Id == viewModel.Id);
+			if (launch == null)
 			{
 				return;
 			}
-			AllLaunches.Remove(entity.Launch);
-			AllLaunches.Insert(entity.Index, viewModel);
+
+			AllLaunches.Remove(launch.Launch);
+			AllLaunches.Insert(launch.Index, viewModel);
 		}
 
 		private void OnLaunchDeleted(object sender, LaunchDeletedEventArgs e)
 		{
-			var entity = AllLaunches.Select((v, i) => new { Launch = v, Index = i }).FirstOrDefault(x => x.Launch.Id == e.DeletedLaunchId);
+			var entity = AllLaunches.Select((v, i) => new {Launch = v, Index = i})
+			                        .FirstOrDefault(x => x.Launch.Id == e.DeletedLaunchId);
+
 			if (entity == null)
 			{
 				return;
 			}
+
 			AllLaunches.Remove(entity.Launch);
-		}
-
-		private void OnLaunchViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-		}
-
-		private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-		{
-			if (e.NewItems != null && e.NewItems.Count != 0)
-			{
-				foreach (LaunchViewModel launchVM in e.NewItems)
-				{
-					launchVM.PropertyChanged += OnLaunchViewModelPropertyChanged;
-				}
-			}
-
-			if (e.OldItems != null && e.OldItems.Count != 0)
-			{
-				foreach (LaunchViewModel launchVM in e.OldItems)
-				{
-					launchVM.PropertyChanged -= OnLaunchViewModelPropertyChanged;
-				}
-			}
 		}
 
 		#endregion // Event Handling Methods

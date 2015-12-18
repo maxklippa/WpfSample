@@ -13,6 +13,7 @@ namespace LaunchSample.WPF
 		protected override void OnStartup(StartupEventArgs e)
 		{
 			base.OnStartup(e);
+
 			AutoMapperConfiguration.Configure();
 
 			var window = new MainWindow();

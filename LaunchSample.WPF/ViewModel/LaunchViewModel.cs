@@ -30,15 +30,21 @@ namespace LaunchSample.WPF.ViewModel
 		public LaunchViewModel(LaunchDto launch, LaunchService launchService)
 		{
 			if (launch == null)
+			{
 				throw new ArgumentNullException("launch");
+			}
 
 			if (launchService == null)
+			{
 				throw new ArgumentNullException("launchService");
+			}
 
 			_launchStatus = LaunchStatus.Success;
 
 			_launch = launch;
 			_launchService = launchService;
+
+			IsHidden = true;
 		}
 
 		#endregion // Constructor
@@ -51,7 +57,9 @@ namespace LaunchSample.WPF.ViewModel
 			set
 			{
 				if (value == _launch.Id)
+				{
 					return;
+				}
 
 				_launch.Id = value;
 
@@ -65,7 +73,9 @@ namespace LaunchSample.WPF.ViewModel
 			set
 			{
 				if (value == _launch.City)
+				{
 					return;
+				}
 
 				_launch.City = value;
 
@@ -79,7 +89,9 @@ namespace LaunchSample.WPF.ViewModel
 			set
 			{
 				if (value == _launch.StartDateTime)
+				{
 					return;
+				}
 
 				_launch.StartDateTime = value;
 
@@ -93,7 +105,9 @@ namespace LaunchSample.WPF.ViewModel
 			set
 			{
 				if (value == _launch.EndDateTime)
+				{
 					return;
+				}
 
 				_launch.EndDateTime = value;
 
@@ -107,7 +121,9 @@ namespace LaunchSample.WPF.ViewModel
 			set
 			{
 				if (value == _launch.Month)
+				{
 					return;
+				}
 
 				_launch.Month = value;
 
@@ -121,7 +137,9 @@ namespace LaunchSample.WPF.ViewModel
 			set
 			{
 				if (value == _launch.Status)
+				{
 					return;
+				}
 
 				_launch.Status = value;
 
@@ -139,7 +157,9 @@ namespace LaunchSample.WPF.ViewModel
 			set
 			{
 				if (value == _launchStatus)
+				{
 					return;
+				}
 
 				_launchStatus = value;
 
@@ -168,7 +188,9 @@ namespace LaunchSample.WPF.ViewModel
 			set
 			{
 				if (value == _isHidden)
+				{
 					return;
+				}
 
 				_isHidden = value;
 
@@ -185,7 +207,9 @@ namespace LaunchSample.WPF.ViewModel
 			set
 			{
 				if (value == _isHiddenInList)
+				{
 					return;
+				}
 
 				_isHiddenInList = value;
 
@@ -230,7 +254,9 @@ namespace LaunchSample.WPF.ViewModel
 		private void Save()
 		{
 			if (!_launch.IsValid)
+			{
 				throw new InvalidOperationException("Cannot save an invalid launch.");
+			}
 
 			if (IsNewLaunch)
 			{
