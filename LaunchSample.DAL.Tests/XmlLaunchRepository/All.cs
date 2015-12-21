@@ -3,6 +3,8 @@ using LaunchSample.Domain.Models.Entities;
 using NSubstitute;
 using NUnit.Framework;
 
+using LR = LaunchSample.DAL.Repositories.LaunchRepository;
+
 namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 {
 	[TestFixture]
@@ -22,7 +24,7 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			// Arrange
 			_serializer.Deserialize().Returns(new List<Launch>());
 
-			var repository = new Repositories.LaunchRepository.XmlLaunchRepository(_serializer);
+			var repository = new LR.XmlLaunchRepository(_serializer);
 
 			// Act 
 			var all = repository.All();
@@ -41,7 +43,7 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 
 			_serializer.Deserialize().Returns(expectedLaunches);
 
-			var repository = new Repositories.LaunchRepository.XmlLaunchRepository(_serializer);
+			var repository = new LR.XmlLaunchRepository(_serializer);
 
 			// Act
 			var actualLaunches = repository.All();
@@ -56,7 +58,7 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			// Arrange
 			_serializer.Deserialize().Returns(l => null);
 
-			var repository = new Repositories.LaunchRepository.XmlLaunchRepository(_serializer);
+			var repository = new LR.XmlLaunchRepository(_serializer);
 
 			// Act 
 			var all = repository.All();

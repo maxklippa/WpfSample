@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -34,7 +35,12 @@ namespace LaunchSample.DAL.Repositories.LaunchRepository
 
 		public Launch Create(Launch launch)
 		{
-			var launches = _serializer.Deserialize().ToList();
+			if (launch == null)
+			{
+				throw new ArgumentNullException();
+			}
+
+			var launches = (_serializer.Deserialize() ?? new List<Launch>()).ToList();
 
 			var id = launches.Any() ? launches.Max(l => l.Id) + 1 : 1;
 			launch.Id = id;
@@ -47,7 +53,7 @@ namespace LaunchSample.DAL.Repositories.LaunchRepository
 
 		public Launch Find(int id)
 		{
-			return _serializer.Deserialize().FirstOrDefault(l => l.Id == id);
+			return (_serializer.Deserialize() ?? new List<Launch>()).FirstOrDefault(l => l.Id == id);
 		}
 
 		public void Update(Launch launch)
