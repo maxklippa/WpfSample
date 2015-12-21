@@ -58,7 +58,12 @@ namespace LaunchSample.DAL.Repositories.LaunchRepository
 
 		public void Update(Launch launch)
 		{
-			var launches = _serializer.Deserialize().ToList();
+			if (launch == null)
+			{
+				throw new ArgumentNullException();
+			}
+
+			var launches = (_serializer.Deserialize() ?? new List<Launch>()).ToList();
 
 			var entity = launches.Select((v, i) => new {Launch = v, Index = i})
 			                      .FirstOrDefault(x => x.Launch.Id == launch.Id);

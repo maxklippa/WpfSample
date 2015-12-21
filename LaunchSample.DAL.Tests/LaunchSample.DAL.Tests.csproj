@@ -76,6 +76,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XmlLaunchRepository\Create.cs" />
     <Compile Include="XmlLaunchRepository\Find.cs" />
+    <Compile Include="XmlLaunchRepository\Update.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LaunchSample.Core\LaunchSample.Core.csproj">
