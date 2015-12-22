@@ -15,6 +15,7 @@ namespace LaunchSample.WPF
 			base.OnStartup(e);
 
 			AutoMapperConfiguration.Configure();
+			AutoMapperConfig.Configure();
 
 			var window = new MainWindow();
 

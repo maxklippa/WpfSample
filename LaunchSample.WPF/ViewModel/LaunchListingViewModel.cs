@@ -238,9 +238,12 @@ namespace LaunchSample.WPF.ViewModel
 				return;
 			}
 
+			var editLaunch = AutoMapper.Mapper.Map<LaunchViewModel, LaunchDto>(SelectedLaunch);
+			var editLaunchViewModel = new LaunchViewModel(editLaunch, _launchService);
+
 			if (LaunchWillUpdated != null)
 			{
-				LaunchWillUpdated(this, new LaunchWillUpdatedEventArgs(SelectedLaunch));
+				LaunchWillUpdated(this, new LaunchWillUpdatedEventArgs(editLaunchViewModel));
 			}
 		}
 

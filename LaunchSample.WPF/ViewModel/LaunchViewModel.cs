@@ -20,7 +20,6 @@ namespace LaunchSample.WPF.ViewModel
 		private RelayCommand _saveCommand;
 		private RelayCommand _cancelCommand;
 
-		private LaunchStatus _launchStatus;
 		private LaunchStatus[] _launchStatusOptions;
 
 		#endregion // Fields
@@ -38,8 +37,6 @@ namespace LaunchSample.WPF.ViewModel
 			{
 				throw new ArgumentNullException("launchService");
 			}
-
-			_launchStatus = LaunchStatus.Success;
 
 			_launch = launch;
 			_launchService = launchService;
@@ -156,15 +153,15 @@ namespace LaunchSample.WPF.ViewModel
 
 		public LaunchStatus LaunchStatus
 		{
-			get { return _launchStatus; }
+			get { return _launch.Status; }
 			set
 			{
-				if (value == _launchStatus)
+				if (value == _launch.Status)
 				{
 					return;
 				}
 
-				_launchStatus = value;
+				_launch.Status = value;
 
 				base.OnPropertyChanged("LaunchStatus");
 			}
