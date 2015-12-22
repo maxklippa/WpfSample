@@ -1,8 +1,13 @@
 ﻿<UserControl x:Class="LaunchSample.WPF.View.LaunchListingView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:converters="clr-namespace:LaunchSample.WPF.Converters"
              MinWidth="500"  Background="CornflowerBlue">
 	
+	<UserControl.Resources>
+		<converters:BoldLaunchConverter x:Key="BoldLaunchConverter"></converters:BoldLaunchConverter>
+	</UserControl.Resources>
+
 	<Grid Margin="10">
 		
 		<Grid.RowDefinitions>
@@ -22,6 +27,9 @@
 					<Style.Triggers>
 						<DataTrigger Binding="{Binding IsHiddenInList}"  Value="True">
 							<Setter Property="Visibility" Value="Collapsed"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding StartDateTime, Converter={StaticResource BoldLaunchConverter}}" Value="True">
+							<Setter Property="FontWeight" Value="Bold" />
 						</DataTrigger>
 					</Style.Triggers>
 				</Style>

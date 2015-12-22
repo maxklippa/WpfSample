@@ -53,6 +53,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\BoldLaunchConverter.cs" />
     <Compile Include="LaunchWillUpdatedEventArgs.cs" />
     <Compile Include="LaunchWillCreatedEventArgs.cs" />
     <Compile Include="RelayCommand.cs" />
