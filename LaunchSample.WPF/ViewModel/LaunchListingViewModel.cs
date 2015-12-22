@@ -63,6 +63,8 @@ namespace LaunchSample.WPF.ViewModel
 			                        .ToList();
 
 			AllLaunches = new ObservableCollection<LaunchViewModel>(all);
+
+			AllLaunches.ToList().ForEach(l => l.IsHiddenInList = !IsSatisfyFilteringCondition(l));
 		}
 
 		#endregion // Constructor
@@ -264,9 +266,11 @@ namespace LaunchSample.WPF.ViewModel
 
 		private bool IsSatisfyFilteringCondition(LaunchViewModel launch)
 		{
-			var launchStatusFilterValue = (LaunchStatus) Enum.Parse(typeof (LaunchStatus), _launchStatusFilter);
+			var launchStatusFilter = _launchStatusFilter == ALL
+				? (LaunchStatus?) null
+				: (LaunchStatus) Enum.Parse(typeof (LaunchStatus), _launchStatusFilter);
 
-			return (_launchStatusFilter == ALL || launch.Status == launchStatusFilterValue) &&
+			return (_launchStatusFilter == ALL || launch.Status == launchStatusFilter) &&
 			       (_launchCityFilter == ALL || launch.City == _launchCityFilter) &&
 			       (_launchFromFilter <= launch.StartDateTime) &&
 			       (launch.EndDateTime <= _launchToFilter);
