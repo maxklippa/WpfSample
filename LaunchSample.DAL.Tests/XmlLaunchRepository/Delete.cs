@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using LaunchSample.DAL.Tests.XmlLaunchRepository.Data;
 using LaunchSample.Domain.Models.Entities;
 using NSubstitute;
 using NUnit.Framework;
@@ -12,29 +13,30 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 	public class Delete
 	{
 		private ILaunchSerializer _serializer;
+		private XmlRepositoryDataProvider _dataProvider;
 
 		[SetUp]
 		public void BeforeTest()
 		{
 			_serializer = Substitute.For<ILaunchSerializer>();
+			_dataProvider = new XmlRepositoryDataProvider();
 		}
 
 		[Test]
 		public void SerializerDidNotSerialize_WhenPassedIdIsOutOfRange()
 		{
 			// Arrange
-			const int existingId1 = 1;
-			const int existingId2 = 2;
-			var launches = new List<Launch> { new Launch { Id = existingId1 }, new Launch { Id = existingId2 } };
+			const int OUT_OF_RANGE_ID = XmlRepositoryDataProvider.THIRD_LAUNCH_ID;
+
+			var launches = new List<Launch> {_dataProvider.Launch1, _dataProvider.Launch2};
+
 			_serializer.Deserialize()
 			           .Returns(launches);
 
 			var repository = CreateXmlRepository();
 
-			const int outOfRangeId = 3;
-
 			// Act 
-			repository.Delete(outOfRangeId);
+			repository.Delete(OUT_OF_RANGE_ID);
 
 			// Assert
 			_serializer.DidNotReceive()
@@ -45,18 +47,17 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 		public void SerializerDidNotSerialize_WhenPassedIdIsNonPositive()
 		{
 			// Arrange
-			const int existingId1 = 1;
-			const int existingId2 = 2;
-			var launches = new List<Launch> { new Launch { Id = existingId1 }, new Launch { Id = existingId2 } };
+			const int OUT_OF_RANGE_ID = -1;
+
+			var launches = new List<Launch> {_dataProvider.Launch1, _dataProvider.Launch2};
+
 			_serializer.Deserialize()
 			           .Returns(launches);
 
 			var repository = CreateXmlRepository();
 
-			const int outOfRangeId = -1;
-
 			// Act 
-			repository.Delete(outOfRangeId);
+			repository.Delete(OUT_OF_RANGE_ID);
 
 			// Assert
 			_serializer.DidNotReceive()
@@ -68,13 +69,14 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 		{
 			// Arrange
 			var launches = new List<Launch>();
+
 			_serializer.Deserialize()
 			           .Returns(launches);
 
 			var repository = CreateXmlRepository();
 
 			// Act 
-			repository.Delete(1);
+			repository.Delete(XmlRepositoryDataProvider.FIRST_LAUNCH_ID);
 
 			// Assert
 			_serializer.DidNotReceive()
@@ -85,22 +87,19 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 		public void ExistingItemWithSame_WhenLaunchSerializerReturnNonEmptyList()
 		{
 			// Arrange
-			const int existingId1 = 1;
-			const int existingId2 = 2;
-			var expectedLaunch1 = new Launch { Id = existingId1 };
-			var expectedLaunch2 = new Launch { Id = existingId2 };
-			var launches = new List<Launch> { expectedLaunch1, expectedLaunch2 };
+			var launches = new List<Launch> {_dataProvider.Launch1, _dataProvider.Launch2};
+
 			_serializer.Deserialize()
 			           .Returns(launches);
 
 			var repository = CreateXmlRepository();
 
 			// Act 
-			repository.Delete(existingId1);
+			repository.Delete(XmlRepositoryDataProvider.FIRST_LAUNCH_ID);
 
 			// Assert
 			_serializer.Received()
-			           .Serialize(Arg.Is<List<Launch>>(x => x.Single() == expectedLaunch2));
+					   .Serialize(Arg.Is<List<Launch>>(x => x.Single() == _dataProvider.Launch2));
 		}
 
 		[Test]
@@ -113,7 +112,7 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			var repository = CreateXmlRepository();
 
 			// Act 
-			repository.Delete(1);
+			repository.Delete(XmlRepositoryDataProvider.FIRST_LAUNCH_ID);
 
 			// Assert
 			_serializer.DidNotReceive()

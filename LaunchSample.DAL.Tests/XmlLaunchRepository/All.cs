@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using LaunchSample.DAL.Tests.XmlLaunchRepository.Data;
 using LaunchSample.Domain.Models.Entities;
 using NSubstitute;
 using NUnit.Framework;
@@ -11,10 +12,12 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 	public class All
 	{
 		private ILaunchSerializer _serializer;
+		private XmlRepositoryDataProvider _dataProvider;
 
 		[SetUp]
 		public void BeforeTest()
 		{
+			_dataProvider = new XmlRepositoryDataProvider();
 			_serializer = Substitute.For<ILaunchSerializer>();
 		}
 
@@ -38,9 +41,7 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 		public void AllDeserializedItemsReturned_WhenLaunchSerializerReturnNonEmptyList()
 		{
 			// Arrange
-			var expectedLaunch1 = new Launch { Id = 0 };
-			var expectedLaunch2 = new Launch { Id = 1 };
-			var expectedLaunches = new[] {expectedLaunch1, expectedLaunch2};
+			var expectedLaunches = new[] {_dataProvider.Launch1, _dataProvider.Launch2};
 
 			_serializer.Deserialize()
 			           .Returns(expectedLaunches);

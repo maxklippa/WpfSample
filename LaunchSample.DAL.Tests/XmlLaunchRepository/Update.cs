@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using LaunchSample.DAL.Tests.XmlLaunchRepository.Data;
 using LaunchSample.Domain.Models.Entities;
 using NSubstitute;
 using NUnit.Framework;
@@ -13,11 +14,13 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 	public class Update
 	{
 		private ILaunchSerializer _serializer;
+		private XmlRepositoryDataProvider _dataProvider;
 
 		[SetUp]
 		public void BeforeTest()
 		{
 			_serializer = Substitute.For<ILaunchSerializer>();
+			_dataProvider = new XmlRepositoryDataProvider();
 		}
 
 		[Test]
@@ -34,20 +37,15 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 		public void SerializerDidNotSerialize_WhenPassedLaunchIdIsOutOfRange()
 		{
 			// Arrange
-			const int existingId1 = 1;
-			const int existingId2 = 2;
-			const string existingCity1 = "Brn";
-			const string existingCity2 = "Nsk";
-			var expectedLaunch1 = new Launch { Id = existingId1, City = existingCity1 };
-			var expectedLaunch2 = new Launch { Id = existingId2, City = existingCity2 };
-			var launches = new List<Launch> { expectedLaunch1, expectedLaunch2 };
+			var launches = new List<Launch> {_dataProvider.Launch1, _dataProvider.Launch2};
+
 			_serializer.Deserialize()
 			           .Returns(launches);
+
 			var repository = CreateXmlRepository();
-			var updatedLaunch = new Launch { Id = 3, City = "Omsk" };
 
 			// Act
-			repository.Update(updatedLaunch);
+			repository.Update(_dataProvider.Launch3);
 			
 			// Assert
 			_serializer.DidNotReceive()
@@ -59,15 +57,14 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 		{
 			// Arrange
 			var launches = new List<Launch>();
+
 			_serializer.Deserialize()
 			           .Returns(launches);
 
 			var repository = CreateXmlRepository();
 
-			var updatedLaunch = new Launch { Id = 3, City = "Omsk" };
-
 			// Act
-			repository.Update(updatedLaunch);
+			repository.Update(_dataProvider.Launch1);
 
 			// Assert
 			_serializer.DidNotReceive()
@@ -78,33 +75,31 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 		public void ExistingItemUpdated_WhenLaunchSerializerReturnNonEmptyList()
 		{
 			// Arrange
-			const int existingId1 = 1;
-			const int existingId2 = 2;
-			const string existingCity1 = "Brn";
-			const string existingCity2 = "Nsk";
-			const string existingCity3 = "Omsk";
-			var expectedLaunch1 = new Launch { Id = existingId1, City = existingCity1 };
-			var expectedLaunch2 = new Launch { Id = existingId2, City = existingCity2 };
-			var launches = new List<Launch> { expectedLaunch1, expectedLaunch2 };
+			const int expectedLaunchesCount = 2;
+
+			var launches = new List<Launch> { _dataProvider.Launch1, _dataProvider.Launch2 };
+
 			_serializer.Deserialize()
 			           .Returns(launches);
 
 			var repository = CreateXmlRepository();
 
-			var updatedLaunch = new Launch { Id = 2, City = existingCity3 };
-
-			const int expectedLaunchesCount = 2;
+			var launch = new Launch
+			                    {
+				                    Id = XmlRepositoryDataProvider.SECOND_LAUNCH_ID,
+				                    City = XmlRepositoryDataProvider.OMSK_CITY
+			                    };
 
 			// Act 
-			repository.Update(updatedLaunch);
+			repository.Update(launch);
 
 			// Assert
 			_serializer.Received()
-			           .Serialize(Arg.Is<List<Launch>>(x => x.Any(l => l.Id == existingId1 &&
-			                                                           l.City == existingCity1)));
+					   .Serialize(Arg.Is<List<Launch>>(x => x.Any(l => l.Id == XmlRepositoryDataProvider.FIRST_LAUNCH_ID &&
+																	   l.City == XmlRepositoryDataProvider.NSK_CITY)));
 			_serializer.Received()
-			           .Serialize(Arg.Is<List<Launch>>(x => x.Any(l => l.Id == existingId2 &&
-			                                                           l.City == existingCity3)));
+			           .Serialize(Arg.Is<List<Launch>>(x => x.Any(l => l.Id == XmlRepositoryDataProvider.SECOND_LAUNCH_ID &&
+			                                                           l.City == XmlRepositoryDataProvider.OMSK_CITY)));
 			_serializer.Received()
 			           .Serialize(Arg.Is<List<Launch>>(x => x.Count == expectedLaunchesCount));
 		}
@@ -118,10 +113,8 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 
 			var repository = CreateXmlRepository();
 
-			var updatedLaunch = new Launch { Id = 3, City = "Omsk" };
-
 			// Act
-			repository.Update(updatedLaunch);
+			repository.Update(_dataProvider.Launch1);
 
 			// Assert
 			_serializer.DidNotReceive()
