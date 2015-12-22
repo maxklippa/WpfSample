@@ -64,8 +64,9 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 
 			var repository = CreateXmlRepository();
 
-			// Act
 			var updatedLaunch = new Launch { Id = 3, City = "Omsk" };
+
+			// Act
 			repository.Update(updatedLaunch);
 
 			// Assert
@@ -90,12 +91,14 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 
 			var repository = CreateXmlRepository();
 
-			// Act 
 			var updatedLaunch = new Launch { Id = 2, City = existingCity3 };
+
+			const int expectedLaunchesCount = 2;
+
+			// Act 
 			repository.Update(updatedLaunch);
 
 			// Assert
-			const int expectedLaunchesCount = 2;
 			_serializer.Received()
 			           .Serialize(Arg.Is<List<Launch>>(x => x.Any(l => l.Id == existingId1 &&
 			                                                           l.City == existingCity1)));
@@ -115,8 +118,9 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 
 			var repository = CreateXmlRepository();
 
-			// Act
 			var updatedLaunch = new Launch { Id = 3, City = "Omsk" };
+
+			// Act
 			repository.Update(updatedLaunch);
 
 			// Assert

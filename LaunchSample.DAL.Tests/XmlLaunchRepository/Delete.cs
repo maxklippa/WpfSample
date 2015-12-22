@@ -31,8 +31,9 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 
 			var repository = CreateXmlRepository();
 
-			// Act 
 			const int outOfRangeId = 3;
+
+			// Act 
 			repository.Delete(outOfRangeId);
 
 			// Assert
@@ -52,8 +53,9 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 
 			var repository = CreateXmlRepository();
 
-			// Act 
 			const int outOfRangeId = -1;
+
+			// Act 
 			repository.Delete(outOfRangeId);
 
 			// Assert

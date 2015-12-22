@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using LaunchSample.Domain.Models.Entities;
 using NSubstitute;
 using NUnit.Framework;
@@ -30,9 +29,10 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			           .Returns(launches);
 
 			var repository = CreateXmlRepository();
+
+			const int outOfRangeId = 3;
 			
 			// Act 
-			const int outOfRangeId = 3;
 			var actualLaunch = repository.Find(outOfRangeId);
 			
 			// Assert
@@ -51,8 +51,9 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 
 			var repository = CreateXmlRepository();
 
-			// Act 
 			const int outOfRangeId = -1;
+
+			// Act 
 			var actualLaunch = repository.Find(outOfRangeId);
 
 			// Assert
