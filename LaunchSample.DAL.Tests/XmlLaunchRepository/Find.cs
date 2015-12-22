@@ -26,7 +26,8 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			const int existingId1 = 1;
 			const int existingId2 = 2;
 			var launches = new List<Launch> { new Launch { Id = existingId1 }, new Launch { Id = existingId2 } };
-			_serializer.Deserialize().Returns(launches);
+			_serializer.Deserialize()
+			           .Returns(launches);
 
 			var repository = CreateXmlRepository();
 			
@@ -63,7 +64,8 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 		{
 			// Arrange
 			var launches = new List<Launch>();
-			_serializer.Deserialize().Returns(launches);
+			_serializer.Deserialize()
+			           .Returns(launches);
 
 			var repository = CreateXmlRepository();
 
@@ -83,7 +85,8 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			var expectedLaunch1 = new Launch { Id = existingId1 };
 			var expectedLaunch2 = new Launch { Id = existingId2 };
 			var launches = new List<Launch> {expectedLaunch1, expectedLaunch2};
-			_serializer.Deserialize().Returns(launches);
+			_serializer.Deserialize()
+			           .Returns(launches);
 
 			var repository = CreateXmlRepository();
 
@@ -98,7 +101,8 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 		public void NullReturned_WhenLaunchSerializerReturnNull()
 		{
 			// Arrange
-			_serializer.Deserialize().Returns(l => null);
+			_serializer.Deserialize()
+			           .Returns(l => null);
 
 			var repository = CreateXmlRepository();
 

@@ -26,7 +26,8 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			const int existingId1 = 1;
 			const int existingId2 = 2;
 			var launches = new List<Launch> { new Launch { Id = existingId1 }, new Launch { Id = existingId2 } };
-			_serializer.Deserialize().Returns(launches);
+			_serializer.Deserialize()
+			           .Returns(launches);
 
 			var repository = CreateXmlRepository();
 
@@ -35,7 +36,8 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			repository.Delete(outOfRangeId);
 
 			// Assert
-			_serializer.DidNotReceive().Serialize(Arg.Any<List<Launch>>());
+			_serializer.DidNotReceive()
+			           .Serialize(Arg.Any<List<Launch>>());
 		}
 
 		[Test]
@@ -45,7 +47,8 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			const int existingId1 = 1;
 			const int existingId2 = 2;
 			var launches = new List<Launch> { new Launch { Id = existingId1 }, new Launch { Id = existingId2 } };
-			_serializer.Deserialize().Returns(launches);
+			_serializer.Deserialize()
+			           .Returns(launches);
 
 			var repository = CreateXmlRepository();
 
@@ -54,7 +57,8 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			repository.Delete(outOfRangeId);
 
 			// Assert
-			_serializer.DidNotReceive().Serialize(Arg.Any<List<Launch>>());
+			_serializer.DidNotReceive()
+			           .Serialize(Arg.Any<List<Launch>>());
 		}
 
 		[Test]
@@ -62,7 +66,8 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 		{
 			// Arrange
 			var launches = new List<Launch>();
-			_serializer.Deserialize().Returns(launches);
+			_serializer.Deserialize()
+			           .Returns(launches);
 
 			var repository = CreateXmlRepository();
 
@@ -70,7 +75,8 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			repository.Delete(1);
 
 			// Assert
-			_serializer.DidNotReceive().Serialize(Arg.Any<List<Launch>>());
+			_serializer.DidNotReceive()
+			           .Serialize(Arg.Any<List<Launch>>());
 		}
 
 		[Test]
@@ -82,7 +88,8 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			var expectedLaunch1 = new Launch { Id = existingId1 };
 			var expectedLaunch2 = new Launch { Id = existingId2 };
 			var launches = new List<Launch> { expectedLaunch1, expectedLaunch2 };
-			_serializer.Deserialize().Returns(launches);
+			_serializer.Deserialize()
+			           .Returns(launches);
 
 			var repository = CreateXmlRepository();
 
@@ -90,14 +97,16 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			repository.Delete(existingId1);
 
 			// Assert
-			_serializer.Received().Serialize(Arg.Is<List<Launch>>(x => x.Single() == expectedLaunch2));
+			_serializer.Received()
+			           .Serialize(Arg.Is<List<Launch>>(x => x.Single() == expectedLaunch2));
 		}
 
 		[Test]
 		public void NothingHappens_WhenLaunchSerializerReturnNull()
 		{
 			// Arrange
-			_serializer.Deserialize().Returns(l => null);
+			_serializer.Deserialize()
+			           .Returns(l => null);
 
 			var repository = CreateXmlRepository();
 
@@ -105,7 +114,8 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			repository.Delete(1);
 
 			// Assert
-			_serializer.DidNotReceive().Serialize(Arg.Any<List<Launch>>());
+			_serializer.DidNotReceive()
+			           .Serialize(Arg.Any<List<Launch>>());
 		}
 
 		private LR.XmlLaunchRepository CreateXmlRepository()
