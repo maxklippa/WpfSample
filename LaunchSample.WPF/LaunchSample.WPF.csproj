@@ -54,6 +54,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\BoldLaunchConverter.cs" />
+    <Compile Include="Converters\SuccessLaunchConverter.cs" />
     <Compile Include="LaunchWillUpdatedEventArgs.cs" />
     <Compile Include="LaunchWillCreatedEventArgs.cs" />
     <Compile Include="RelayCommand.cs" />

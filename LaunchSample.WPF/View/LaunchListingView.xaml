@@ -6,6 +6,11 @@
 	
 	<UserControl.Resources>
 		<converters:BoldLaunchConverter x:Key="BoldLaunchConverter"></converters:BoldLaunchConverter>
+		<converters:SuccessLaunchConverter x:Key="SuccessLaunchConverter"></converters:SuccessLaunchConverter>
+
+		<ContextMenu x:Key="SuccessLaunchMenu">
+			<MenuItem Header="Highlight" />
+		</ContextMenu>
 	</UserControl.Resources>
 
 	<Grid Margin="10">
@@ -30,6 +35,9 @@
 						</DataTrigger>
 						<DataTrigger Binding="{Binding StartDateTime, Converter={StaticResource BoldLaunchConverter}}" Value="True">
 							<Setter Property="FontWeight" Value="Bold" />
+						</DataTrigger>
+						<DataTrigger Binding="{Binding Status, Converter={StaticResource SuccessLaunchConverter}}" Value="True">
+							<Setter Property="ContextMenu" Value="{StaticResource SuccessLaunchMenu}" />
 						</DataTrigger>
 					</Style.Triggers>
 				</Style>
