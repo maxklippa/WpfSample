@@ -45,7 +45,8 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			const int existingId1 = 1;
 			const int existingId2 = 2;
 			var launches = new List<Launch> { new Launch { Id = existingId1 }, new Launch { Id = existingId2 } };
-			_serializer.Deserialize().Returns(launches);
+			_serializer.Deserialize()
+			           .Returns(launches);
 
 			var repository = new LR.XmlLaunchRepository(_serializer);
 
@@ -67,7 +68,7 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			var repository = new LR.XmlLaunchRepository(_serializer);
 
 			// Act 
-			var actualLaunch = repository.Find(1);
+			var actualLaunch = repository.Find(id: 1);
 
 			// Assert
 			Assert.IsNull(actualLaunch);
@@ -84,7 +85,7 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			var launches = new List<Launch> {expectedLaunch1, expectedLaunch2};
 			_serializer.Deserialize().Returns(launches);
 
-			var repository = new Repositories.LaunchRepository.XmlLaunchRepository(_serializer);
+			var repository = new LR.XmlLaunchRepository(_serializer);
 
 			// Act 
 			var actualLaunch = repository.Find(existingId1);
