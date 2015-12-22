@@ -69,7 +69,10 @@ namespace LaunchSample.WPF.ViewModel
 
 		public string City
 		{
-			get { return _launch.City; }
+			get
+			{
+				return _launch.City;
+			}
 			set
 			{
 				if (value == _launch.City)

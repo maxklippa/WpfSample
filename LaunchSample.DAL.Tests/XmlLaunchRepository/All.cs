@@ -24,7 +24,7 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			// Arrange
 			_serializer.Deserialize().Returns(new List<Launch>());
 
-			var repository = new LR.XmlLaunchRepository(_serializer);
+			var repository = CreateXmlRepository();
 
 			// Act 
 			var all = repository.All();
@@ -43,7 +43,7 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 
 			_serializer.Deserialize().Returns(expectedLaunches);
 
-			var repository = new LR.XmlLaunchRepository(_serializer);
+			var repository = CreateXmlRepository();
 
 			// Act
 			var actualLaunches = repository.All();
@@ -58,13 +58,18 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			// Arrange
 			_serializer.Deserialize().Returns(l => null);
 
-			var repository = new LR.XmlLaunchRepository(_serializer);
+			var repository = CreateXmlRepository();
 
 			// Act 
 			var all = repository.All();
 
 			// Assert
 			Assert.IsEmpty(all);
+		}
+
+		private LR.XmlLaunchRepository CreateXmlRepository()
+		{
+			return new LR.XmlLaunchRepository(_serializer);
 		}
 	}
 }

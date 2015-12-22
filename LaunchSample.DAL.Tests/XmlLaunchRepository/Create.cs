@@ -24,7 +24,7 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 		public void ArgumentNullExceptionThrowed_WhenNullIsPassedAsArgument()
 		{
 			// Arrange
-			var repository = new LR.XmlLaunchRepository(_serializer);
+			var repository = CreateXmlRepository();
 
 			// Act and Assert
 			Assert.Throws<ArgumentNullException>(() => repository.Create(null));
@@ -37,7 +37,7 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			var launches = new List<Launch>();
 			_serializer.Deserialize().Returns(launches);
 
-			var repository = new LR.XmlLaunchRepository(_serializer);
+			var repository = CreateXmlRepository();
 
 			// Act 
 			var actualLaunch = repository.Create(new Launch());
@@ -57,7 +57,7 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			var launches = new List<Launch> {new Launch {Id = existingId1}, new Launch {Id = existingId2}};
 			_serializer.Deserialize().Returns(launches);
 
-			var repository = new LR.XmlLaunchRepository(_serializer);
+			var repository = CreateXmlRepository();
 
 			// Act 
 			var actualLaunch = repository.Create(new Launch());
@@ -78,7 +78,7 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			// Arrange
 			_serializer.Deserialize().Returns(l => null);
 
-			var repository = new LR.XmlLaunchRepository(_serializer);
+			var repository = CreateXmlRepository();
 
 			// Act 
 			var actualLaunch = repository.Create(new Launch());
@@ -87,6 +87,11 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			const int expectedLaunchId = 1;
 			Assert.AreEqual(expectedLaunchId, actualLaunch.Id);
 			_serializer.Received().Serialize(Arg.Is<List<Launch>>(x => x.Single(l => l.Id == expectedLaunchId) == actualLaunch));
+		}
+
+		private LR.XmlLaunchRepository CreateXmlRepository()
+		{
+			return new LR.XmlLaunchRepository(_serializer);
 		}
 	}
 }

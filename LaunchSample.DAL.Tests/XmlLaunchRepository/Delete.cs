@@ -28,7 +28,7 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			var launches = new List<Launch> { new Launch { Id = existingId1 }, new Launch { Id = existingId2 } };
 			_serializer.Deserialize().Returns(launches);
 
-			var repository = new LR.XmlLaunchRepository(_serializer);
+			var repository = CreateXmlRepository();
 
 			// Act 
 			const int outOfRangeId = 3;
@@ -47,7 +47,7 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			var launches = new List<Launch> { new Launch { Id = existingId1 }, new Launch { Id = existingId2 } };
 			_serializer.Deserialize().Returns(launches);
 
-			var repository = new LR.XmlLaunchRepository(_serializer);
+			var repository = CreateXmlRepository();
 
 			// Act 
 			const int outOfRangeId = -1;
@@ -64,7 +64,7 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			var launches = new List<Launch>();
 			_serializer.Deserialize().Returns(launches);
 
-			var repository = new LR.XmlLaunchRepository(_serializer);
+			var repository = CreateXmlRepository();
 
 			// Act 
 			repository.Delete(1);
@@ -84,7 +84,7 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			var launches = new List<Launch> { expectedLaunch1, expectedLaunch2 };
 			_serializer.Deserialize().Returns(launches);
 
-			var repository = new LR.XmlLaunchRepository(_serializer);
+			var repository = CreateXmlRepository();
 
 			// Act 
 			repository.Delete(existingId1);
@@ -99,13 +99,18 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 			// Arrange
 			_serializer.Deserialize().Returns(l => null);
 
-			var repository = new LR.XmlLaunchRepository(_serializer);
+			var repository = CreateXmlRepository();
 
 			// Act 
 			repository.Delete(1);
 
 			// Assert
 			_serializer.DidNotReceive().Serialize(Arg.Any<List<Launch>>());
+		}
+
+		private LR.XmlLaunchRepository CreateXmlRepository()
+		{
+			return new LR.XmlLaunchRepository(_serializer);
 		}
 	}
 }
