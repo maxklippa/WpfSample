@@ -78,7 +78,7 @@ namespace LaunchSample.DAL.Repositories.LaunchRepository
 
 		public void Delete(int id)
 		{
-			var launches = _serializer.Deserialize().ToList();
+			var launches = (_serializer.Deserialize() ?? new List<Launch>()).ToList();
 
 			var entity = launches.Select((v, i) => new {Launch = v, Index = i})
 			                      .FirstOrDefault(x => x.Launch.Id == id);
