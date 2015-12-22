@@ -20,7 +20,7 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 		}
 
 		[Test]
-		public void NothingHappens_WhenPassedIdIsOutOfRange()
+		public void SerializerDidNotSerialize_WhenPassedIdIsOutOfRange()
 		{
 			// Arrange
 			const int existingId1 = 1;
@@ -42,7 +42,7 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 		}
 
 		[Test]
-		public void NothingHappens_WhenPassedIdIsNonPositive()
+		public void SerializerDidNotSerialize_WhenPassedIdIsNonPositive()
 		{
 			// Arrange
 			const int existingId1 = 1;
@@ -64,7 +64,7 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 		}
 
 		[Test]
-		public void NothingHappens_WhenLaunchSerializerReturnEmptyList()
+		public void SerializerDidNotSerialize_WhenLaunchSerializerReturnEmptyList()
 		{
 			// Arrange
 			var launches = new List<Launch>();
@@ -104,7 +104,7 @@ namespace LaunchSample.DAL.Tests.XmlLaunchRepository
 		}
 
 		[Test]
-		public void NothingHappens_WhenLaunchSerializerReturnNull()
+		public void SerializerDidNotSerialize_WhenLaunchSerializerReturnNull()
 		{
 			// Arrange
 			_serializer.Deserialize()
