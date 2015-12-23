@@ -8,6 +8,10 @@ namespace LaunchSample.BLL.Services.LaunchService
 {
 	public interface ILaunchService
 	{
+		event EventHandler<LaunchCreatedEventArgs> LaunchCreated;
+		event EventHandler<LaunchUpdatedEventArgs> LaunchUpdated;
+		event EventHandler<LaunchDeletedEventArgs> LaunchDeleted;
+
 		IEnumerable<LaunchDto> All();
 		void Create(LaunchDto launch);
 		Launch Find(int id);

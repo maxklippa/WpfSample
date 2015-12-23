@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Input;
-using LaunchSample.BLL.Services;
 using LaunchSample.BLL.Services.LaunchService;
 using LaunchSample.Core.Enumerations;
 using LaunchSample.Domain.Models.Dtos;
@@ -13,7 +12,7 @@ namespace LaunchSample.WPF.ViewModel
 		#region Fields
 
 		private readonly LaunchDto _launch;
-		private readonly LaunchService _launchService;
+		private readonly ILaunchService _launchService;
 
 		private bool _isHidden;
 		private bool _isHiddenInList;
@@ -26,7 +25,7 @@ namespace LaunchSample.WPF.ViewModel
 
 		#region Constructor
 
-		public LaunchViewModel(LaunchDto launch, LaunchService launchService)
+		public LaunchViewModel(LaunchDto launch, ILaunchService launchService)
 		{
 			if (launch == null)
 			{

@@ -81,6 +81,8 @@
 			<Button Grid.Row="2" Grid.Column="0" Content="Add" Command="{Binding Path=CreateLaunchCommand}"/>
 			<Button Grid.Row="2" Grid.Column="2" Content="Edit" Command="{Binding Path=UpdateLaunchCommand}"/>
 			<Button Grid.Row="2" Grid.Column="4" Content="Remove" Command="{Binding Path=DeleteLaunchCommand}"/>
+
+			<CheckBox Grid.Row="2" Grid.Column="6" Content="Highlighted Only"></CheckBox>
 		</Grid>
 
 	</Grid>

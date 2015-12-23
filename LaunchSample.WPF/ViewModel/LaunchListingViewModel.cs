@@ -15,7 +15,7 @@ namespace LaunchSample.WPF.ViewModel
 
 		#region Fields
 
-		private readonly LaunchService _launchService;
+		private readonly ILaunchService _launchService;
 
 		private RelayCommand _createLaunchCommand;
 		private RelayCommand _updateLaunchCommand;
@@ -27,12 +27,13 @@ namespace LaunchSample.WPF.ViewModel
 		private string _launchCityFilter;
 		private DateTime _launchFromFilter;
 		private DateTime _launchToFilter;
+		private bool _isHighlightedOnly;
 
 		#endregion // Fields
 
 		#region Constructor
 
-		public LaunchListingViewModel(LaunchService launchService)
+		public LaunchListingViewModel(ILaunchService launchService)
 		{
 			if (launchService == null)
 			{
@@ -182,6 +183,23 @@ namespace LaunchSample.WPF.ViewModel
 			}
 		}
 
+		public bool IsHighlightedOnly {
+			get { return _isHighlightedOnly; }
+			set
+			{
+				if (value == _isHighlightedOnly)
+				{
+					return;
+				}
+
+				_isHighlightedOnly = value;
+
+				AllLaunches.ToList().ForEach(l => l.IsHiddenInList = !IsSatisfyFilteringCondition(l));
+
+				base.OnPropertyChanged("IsHighlightedOnly");
+			} 
+		}
+
 		public ICommand CreateLaunchCommand
 		{
 			get
@@ -270,9 +288,13 @@ namespace LaunchSample.WPF.ViewModel
 				? (LaunchStatus?) null
 				: (LaunchStatus) Enum.Parse(typeof (LaunchStatus), _launchStatusFilter);
 
+				// status filter 
 			return (_launchStatusFilter == ALL || launch.Status == launchStatusFilter) &&
+				// city filter
 			       (_launchCityFilter == ALL || launch.City == _launchCityFilter) &&
+				// start date filter 
 			       (_launchFromFilter <= launch.StartDateTime) &&
+				// end date filter 
 			       (launch.EndDateTime <= _launchToFilter);
 		}
 
