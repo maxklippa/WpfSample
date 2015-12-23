@@ -16,6 +16,7 @@ namespace LaunchSample.WPF.ViewModel
 
 		private bool _isHidden;
 		private bool _isHiddenInList;
+		private bool _isHighlighted;
 		private RelayCommand _saveCommand;
 		private RelayCommand _cancelCommand;
 
@@ -213,6 +214,22 @@ namespace LaunchSample.WPF.ViewModel
 				_isHiddenInList = value;
 
 				base.OnPropertyChanged("IsHiddenInList");
+			}
+		}
+
+		public bool IsHighlighted
+		{
+			get { return _isHighlighted; }
+			set
+			{
+				if (value == _isHighlighted)
+				{
+					return;
+				}
+
+				_isHighlighted = value;
+
+				base.OnPropertyChanged("IsHighlighted");
 			}
 		}
 

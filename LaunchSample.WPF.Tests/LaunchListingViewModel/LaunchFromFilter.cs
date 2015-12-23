@@ -29,7 +29,7 @@ namespace LaunchSample.WPF.Tests.LaunchListingViewModel
 			// Arrange
 			_service.GetAll(Arg.Any<string>(), Arg.Any<DateTime?>(), Arg.Any<DateTime?>(), Arg.Any<LaunchStatus?>()).Returns(_dataProvider.Launches);
 			var launchListingVM = new LaunchListingVM(_service);
-			var expectedLaunchIds = _dataProvider.Launches.Where(l => l.StartDateTime >= DataProvider.FIRST_LAUNCH_STARTTIME)
+			var expectedLaunchIds = launchListingVM.AllLaunches.Where(l => l.StartDateTime >= DataProvider.FIRST_LAUNCH_STARTTIME)
 														  .Select(l => l.Id);
 
 			// Act 
@@ -47,10 +47,11 @@ namespace LaunchSample.WPF.Tests.LaunchListingViewModel
 			// Arrange
 			_service.GetAll(Arg.Any<string>(), Arg.Any<DateTime?>(), Arg.Any<DateTime?>(), Arg.Any<LaunchStatus?>()).Returns(_dataProvider.Launches);
 			var launchListingVM = new LaunchListingVM(_service);
-			var expectedLaunchIds = _dataProvider.Launches.Where(l => l.City == DataProvider.SECOND_LAUNCH_CITY &&
+			var expectedLaunchIds = launchListingVM.AllLaunches.Where(l => l.City == DataProvider.SECOND_LAUNCH_CITY &&
 																	  l.Status.ToString() == DataProvider.SECOND_LAUNCH_STATUS.ToString() &&
 																	  l.StartDateTime >= DataProvider.SECOND_LAUNCH_STARTTIME &&
-																	  l.EndDateTime <= DataProvider.SECOND_LAUNCH_ENDTIME)
+																	  l.EndDateTime <= DataProvider.SECOND_LAUNCH_ENDTIME &&
+																	  l.IsHighlighted)
 												 .Select(l => l.Id);
 
 			// Act 
@@ -58,6 +59,7 @@ namespace LaunchSample.WPF.Tests.LaunchListingViewModel
 			launchListingVM.LaunchStatusFilter = DataProvider.SECOND_LAUNCH_STATUS.ToString();
 			launchListingVM.LaunchFromFilter = DataProvider.SECOND_LAUNCH_STARTTIME;
 			launchListingVM.LaunchToFilter = DataProvider.SECOND_LAUNCH_ENDTIME;
+			launchListingVM.IsHighlightedOnly = true;
 			var actualLaunchIds = launchListingVM.AllLaunches.Where(l => !l.IsHiddenInList)
 												 .Select(l => l.Id);
 

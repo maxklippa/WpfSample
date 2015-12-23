@@ -20,6 +20,7 @@ namespace LaunchSample.WPF.ViewModel
 		private RelayCommand _createLaunchCommand;
 		private RelayCommand _updateLaunchCommand;
 		private RelayCommand _deleteLaunchCommand;
+		private RelayCommand _highlightingCommand;
 
 		private string[] _launchStatusFilterOptions;
 		private string _launchStatusFilter;
@@ -236,6 +237,18 @@ namespace LaunchSample.WPF.ViewModel
 			}
 		}
 
+		public ICommand HighlightingCommand
+		{
+			get
+			{
+				if (_highlightingCommand == null)
+				{
+					_highlightingCommand = new RelayCommand(param => HighlightLaunch());
+				}
+				return _highlightingCommand;
+			}
+		}
+
 		#endregion // Public Interface
 
 		#region Public Methods
@@ -278,6 +291,16 @@ namespace LaunchSample.WPF.ViewModel
 			AllLaunches.Remove(SelectedLaunch);
 		}
 
+		private void HighlightLaunch()
+		{
+			if (SelectedLaunch == null)
+			{
+				return;
+			}
+
+			SelectedLaunch.IsHighlighted = !SelectedLaunch.IsHighlighted;
+		}
+
 		#endregion // Public Methods
 
 		#region Private Methods
@@ -295,7 +318,9 @@ namespace LaunchSample.WPF.ViewModel
 				// start date filter 
 			       (_launchFromFilter <= launch.StartDateTime) &&
 				// end date filter 
-			       (launch.EndDateTime <= _launchToFilter);
+			       (launch.EndDateTime <= _launchToFilter) &&
+				// is highlighted filter
+				   (!_isHighlightedOnly || launch.IsHighlighted);
 		}
 
 		#endregion // Private Methods

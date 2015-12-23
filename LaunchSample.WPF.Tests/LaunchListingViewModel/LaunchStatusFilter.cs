@@ -31,7 +31,7 @@ namespace LaunchSample.WPF.Tests.LaunchListingViewModel
 			// Arrange
 			_service.GetAll().Returns(_dataProvider.Launches);
 			var launchListingVM = new LaunchListingVM(_service);
-			var expectedLaunchIds = _dataProvider.Launches.Select(l => l.Id);
+			var expectedLaunchIds = launchListingVM.AllLaunches.Select(l => l.Id);
 
 			// Act 
 			launchListingVM.LaunchStatusFilter = ALL;
@@ -48,7 +48,7 @@ namespace LaunchSample.WPF.Tests.LaunchListingViewModel
 			// Arrange
 			_service.GetAll(Arg.Any<string>(), Arg.Any<DateTime?>(), Arg.Any<DateTime?>(), Arg.Any<LaunchStatus?>()).Returns(_dataProvider.Launches);
 			var launchListingVM = new LaunchListingVM(_service);
-			var expectedLaunchIds = _dataProvider.Launches.Where(l => l.Status == DataProvider.FIRST_LAUNCH_STATUS)
+			var expectedLaunchIds = launchListingVM.AllLaunches.Where(l => l.Status == DataProvider.FIRST_LAUNCH_STATUS)
 														  .Select(l => l.Id);
 
 			// Act 
@@ -66,10 +66,11 @@ namespace LaunchSample.WPF.Tests.LaunchListingViewModel
 			// Arrange
 			_service.GetAll(Arg.Any<string>(), Arg.Any<DateTime?>(), Arg.Any<DateTime?>(), Arg.Any<LaunchStatus?>()).Returns(_dataProvider.Launches);
 			var launchListingVM = new LaunchListingVM(_service);
-			var expectedLaunchIds = _dataProvider.Launches.Where(l => l.City == DataProvider.FIRST_LAUNCH_CITY &&
+			var expectedLaunchIds = launchListingVM.AllLaunches.Where(l => l.City == DataProvider.FIRST_LAUNCH_CITY &&
 																	  l.Status.ToString() == DataProvider.FIRST_LAUNCH_STATUS.ToString() &&
 																	  l.StartDateTime >= DataProvider.FIRST_LAUNCH_STARTTIME &&
-																	  l.EndDateTime <= DataProvider.FIRST_LAUNCH_ENDTIME)
+																	  l.EndDateTime <= DataProvider.FIRST_LAUNCH_ENDTIME &&
+																	  l.IsHighlighted)
 												 .Select(l => l.Id);
 
 			// Act 
@@ -77,6 +78,7 @@ namespace LaunchSample.WPF.Tests.LaunchListingViewModel
 			launchListingVM.LaunchStatusFilter = DataProvider.FIRST_LAUNCH_STATUS.ToString();
 			launchListingVM.LaunchFromFilter = DataProvider.FIRST_LAUNCH_STARTTIME;
 			launchListingVM.LaunchToFilter = DataProvider.FIRST_LAUNCH_ENDTIME;
+			launchListingVM.IsHighlightedOnly = true;
 			var actualLaunchIds = launchListingVM.AllLaunches.Where(l => !l.IsHiddenInList)
 			                                     .Select(l => l.Id);
 

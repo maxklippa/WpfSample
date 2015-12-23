@@ -2,14 +2,17 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:converters="clr-namespace:LaunchSample.WPF.Converters"
+			 xmlns:local="clr-namespace:LaunchSample.WPF.Helpers"
              MinWidth="500"  Background="CornflowerBlue">
 	
 	<UserControl.Resources>
+		<local:BindingProxy x:Key="DataContextProxy" Data="{Binding}" />
+		
 		<converters:BoldLaunchConverter x:Key="BoldLaunchConverter"></converters:BoldLaunchConverter>
 		<converters:SuccessLaunchConverter x:Key="SuccessLaunchConverter"></converters:SuccessLaunchConverter>
 
 		<ContextMenu x:Key="SuccessLaunchMenu">
-			<MenuItem Header="Highlight" />
+			<MenuItem Header="Highlight" Command="{Binding Path=HighlightingCommand}"/>
 		</ContextMenu>
 	</UserControl.Resources>
 
@@ -26,7 +29,8 @@
 				  ItemsSource="{Binding Path=AllLaunches}" 
 				  SelectedItem="{Binding SelectedLaunch, Mode=TwoWay}"
 				  AutoGenerateColumns="False" 
-				  SelectionMode="Single">
+				  SelectionMode="Single"
+				  Tag="{Binding DataContext,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window}}">
 			<DataGrid.RowStyle>
 				<Style TargetType="{x:Type DataGridRow}">
 					<Style.Triggers>
@@ -37,7 +41,18 @@
 							<Setter Property="FontWeight" Value="Bold" />
 						</DataTrigger>
 						<DataTrigger Binding="{Binding Status, Converter={StaticResource SuccessLaunchConverter}}" Value="True">
-							<Setter Property="ContextMenu" Value="{StaticResource SuccessLaunchMenu}" />
+<!--							<Setter Property="ContextMenu" Value="{StaticResource SuccessLaunchMenu}" />-->
+							<Setter >
+								<Setter.Property>ContextMenu</Setter.Property>
+								<Setter.Value>
+									<ContextMenu>
+										<MenuItem Header="Highlight" Command="{Binding Path=Data.HighlightingCommand, Source={StaticResource DataContextProxy}}"/>
+									</ContextMenu>
+								</Setter.Value>
+							</Setter>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding IsHighlighted}" Value="True">
+							<Setter Property="Background" Value="Yellow" />
 						</DataTrigger>
 					</Style.Triggers>
 				</Style>
@@ -82,7 +97,7 @@
 			<Button Grid.Row="2" Grid.Column="2" Content="Edit" Command="{Binding Path=UpdateLaunchCommand}"/>
 			<Button Grid.Row="2" Grid.Column="4" Content="Remove" Command="{Binding Path=DeleteLaunchCommand}"/>
 
-			<CheckBox Grid.Row="2" Grid.Column="6" Content="Highlighted Only"></CheckBox>
+			<CheckBox Grid.Row="2" Grid.Column="6" Content="Highlighted Only" IsChecked="{Binding IsHighlightedOnly}"></CheckBox>
 		</Grid>
 
 	</Grid>
