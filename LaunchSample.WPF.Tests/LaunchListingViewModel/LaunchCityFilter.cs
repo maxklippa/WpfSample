@@ -77,7 +77,8 @@ namespace LaunchSample.WPF.Tests.LaunchListingViewModel
 			launchListingVM.LaunchStatusFilter = DataProvider.FIRST_LAUNCH_STATUS.ToString();
 			launchListingVM.LaunchFromFilter = DataProvider.FIRST_LAUNCH_STARTTIME;
 			launchListingVM.LaunchToFilter = DataProvider.FIRST_LAUNCH_ENDTIME;
-			var actualLaunchIds = launchListingVM.AllLaunches.Where(l => !l.IsHiddenInList).Select(l => l.Id);
+			var actualLaunchIds = launchListingVM.AllLaunches.Where(l => !l.IsHiddenInList)
+			                                     .Select(l => l.Id);
 
 			// Assert
 			CollectionAssert.AreEquivalent(expectedLaunchIds, actualLaunchIds);
